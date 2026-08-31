@@ -1,24 +1,54 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { Menu, Phone, X } from "lucide-react";
 import { siteData } from "@/data/site";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
-export function SiteHeader() {
+export function SiteHeader({ overlay = false }: { overlay?: boolean }) {
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    if (!overlay) return;
+    const onScroll = () => setScrolled(window.scrollY > 16);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [overlay]);
+
+  const light = overlay && !scrolled && !open;
 
   return (
-    <header className="sticky top-0 z-50 border-b border-border/70 bg-cream/90 backdrop-blur">
+    <header
+      className={cn(
+        "z-50 border-b",
+        overlay ? "fixed inset-x-0 top-0" : "sticky top-0",
+        light
+          ? "border-transparent bg-transparent"
+          : "border-border/70 bg-cream/90 backdrop-blur",
+      )}
+    >
       <div className="section-x flex h-18 items-center justify-between gap-4 py-3">
         <Link to="/" className="flex items-center gap-3" aria-label={`${siteData.name} home`}>
           <span className="flex size-10 items-center justify-center rounded-full bg-primary text-sm font-bold tracking-widest text-primary-foreground">
             N
           </span>
           <span className="leading-tight">
-            <span className="block font-display text-lg font-semibold text-foreground">
+            <span
+              className={cn(
+                "block font-display text-lg font-semibold",
+                light ? "text-cream" : "text-foreground",
+              )}
+            >
               {siteData.name}
             </span>
-            <span className="block text-[11px] tracking-wide text-muted-foreground">
+            <span
+              className={cn(
+                "block text-[11px] tracking-wide",
+                light ? "text-cream/70" : "text-muted-foreground",
+              )}
+            >
               {siteData.tagline}
             </span>
           </span>
@@ -29,8 +59,13 @@ export function SiteHeader() {
             <Link
               key={item.to}
               to={item.to}
-              activeProps={{ className: "text-primary" }}
-              className="rounded-md px-3 py-2 text-sm font-medium text-foreground/75 transition-colors hover:text-primary"
+              activeProps={{ className: light ? "text-gold" : "text-primary" }}
+              className={cn(
+                "rounded-md px-3 py-2 text-sm font-medium transition-colors",
+                light
+                  ? "text-cream/85 hover:text-gold"
+                  : "text-foreground/75 hover:text-primary",
+              )}
             >
               {item.label}
             </Link>
@@ -51,7 +86,10 @@ export function SiteHeader() {
           onClick={() => setOpen((v) => !v)}
           aria-expanded={open}
           aria-label={open ? "Close menu" : "Open menu"}
-          className="inline-flex size-10 items-center justify-center rounded-md border border-border text-foreground lg:hidden"
+          className={cn(
+            "inline-flex size-10 items-center justify-center rounded-md border lg:hidden",
+            light ? "border-cream/40 text-cream" : "border-border text-foreground",
+          )}
         >
           {open ? <X className="size-5" /> : <Menu className="size-5" />}
         </button>

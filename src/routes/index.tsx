@@ -62,9 +62,9 @@ function HomePage() {
   const { hero, serviceCategories, values, career, gallery, testimonials } = Route.useLoaderData();
 
   return (
-    <SiteLayout>
+    <SiteLayout overlayHeader>
       {/* Hero */}
-      <section className="relative isolate flex min-h-[86vh] items-center overflow-hidden">
+      <section className="relative isolate flex h-svh min-h-svh w-full items-center overflow-hidden">
         <img
           src={hero.image.src}
           alt={hero.image.alt}
@@ -72,7 +72,7 @@ function HomePage() {
           loading="eager"
         />
         <div className="hero-overlay absolute inset-0 -z-10" />
-        <div className="section-x py-24">
+        <div className="section-x py-24 pt-28">
           <div className="max-w-2xl">
             <p className="eyebrow animate-rise text-gold">{hero.eyebrow}</p>
             <h1 className="animate-rise mt-4 text-4xl leading-[1.05] font-semibold text-cream sm:text-6xl lg:text-7xl">

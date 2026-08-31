@@ -3,7 +3,13 @@ import { SiteHeader } from "./SiteHeader";
 import { SiteFooter } from "./SiteFooter";
 import { FloatingContact } from "./FloatingContact";
 
-export function SiteLayout({ children }: { children: ReactNode }) {
+export function SiteLayout({
+  children,
+  overlayHeader = false,
+}: {
+  children: ReactNode;
+  overlayHeader?: boolean;
+}) {
   return (
     <div className="flex min-h-screen flex-col">
       <a
@@ -12,7 +18,7 @@ export function SiteLayout({ children }: { children: ReactNode }) {
       >
         Skip to content
       </a>
-      <SiteHeader />
+      <SiteHeader overlay={overlayHeader} />
       <main id="main" className="flex-1">
         {children}
       </main>
