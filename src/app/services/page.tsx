@@ -1,4 +1,5 @@
-import { createFileRoute } from "@tanstack/react-router";
+import type { Metadata } from "next";
+import Image from "next/image";
 import { getServicesContent } from "@/lib/content";
 import { SiteLayout } from "@/components/SiteLayout";
 import { PageHero } from "@/components/PageHero";
@@ -6,54 +7,51 @@ import { SectionHeading } from "@/components/SectionHeading";
 import { Reveal } from "@/components/Reveal";
 import { Icon } from "@/components/Icon";
 import { CTASection } from "@/components/CTASection";
+import { JsonLd } from "@/components/JsonLd";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { faqs as faqData } from "@/data/services";
 
 const title = "Services | Physical, Written & SSB Training — NAPT Academy";
 const description =
   "Physical fitness conditioning, entrance exam coaching, SSB and interview training, plus recruitment alerts and eligibility guidance for defence and police aspirants.";
 
-export const Route = createFileRoute("/services")({
-  loader: () => getServicesContent(),
-  head: () => ({
-    meta: [
-      { title },
-      { name: "description", content: description },
-      { property: "og:title", content: title },
-      { property: "og:description", content: description },
-      { property: "og:type", content: "website" },
-      { property: "og:url", content: "/services" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-    links: [{ rel: "canonical", href: "/services" }],
-    scripts: [
-      {
-        type: "application/ld+json",
-        children: JSON.stringify({
+export const metadata: Metadata = {
+  title,
+  description,
+  alternates: { canonical: "/services" },
+  openGraph: {
+    title,
+    description,
+    type: "website",
+    url: "/services",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title,
+    description,
+  },
+};
+
+export default async function ServicesPage() {
+  const { hero, services, commitment, opportunities, eligibility, faqs } = await getServicesContent();
+
+  return (
+    <SiteLayout>
+      <JsonLd
+        data={{
           "@context": "https://schema.org",
           "@type": "FAQPage",
-          mainEntity: faqData.map((f) => ({
+          mainEntity: faqs.map((f) => ({
             "@type": "Question",
             name: f.question,
             acceptedAnswer: { "@type": "Answer", text: f.answer },
           })),
-        }),
-      },
-    ],
-  }),
-  component: ServicesPage,
-});
-
-function ServicesPage() {
-  const { hero, services, commitment, opportunities, eligibility, faqs } = Route.useLoaderData();
-
-  return (
-    <SiteLayout>
+        }}
+      />
       <PageHero title={hero.title} image={hero.image} breadcrumb="Services" />
 
       <section className="py-16 sm:py-24">
@@ -71,9 +69,7 @@ function ServicesPage() {
                     <Icon name={service.icon} className="size-6" />
                   </span>
                   <h3 className="mt-5 text-lg font-semibold text-foreground">{service.title}</h3>
-                  <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-                    {service.description}
-                  </p>
+                  <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{service.description}</p>
                 </article>
               </Reveal>
             ))}
@@ -84,13 +80,7 @@ function ServicesPage() {
       <section className="bg-forest py-16 text-cream sm:py-24">
         <div className="section-x grid items-center gap-12 lg:grid-cols-2">
           <Reveal>
-            <SectionHeading
-              inverted
-              align="left"
-              eyebrow="Our Commitment"
-              title={commitment.heading}
-              body={commitment.body}
-            />
+            <SectionHeading inverted align="left" eyebrow="Our Commitment" title={commitment.heading} body={commitment.body} />
             <div className="mt-8 grid gap-4 sm:grid-cols-2">
               {commitment.stats.map((stat) => (
                 <div
@@ -109,10 +99,11 @@ function ServicesPage() {
             </div>
           </Reveal>
           <Reveal delay={120}>
-            <img
+            <Image
               src={commitment.image.src}
               alt={commitment.image.alt}
-              loading="lazy"
+              width={1600}
+              height={1067}
               className="h-full max-h-[28rem] w-full rounded-2xl object-cover shadow-lift"
             />
           </Reveal>
@@ -122,10 +113,11 @@ function ServicesPage() {
       <section className="grain-surface py-16 sm:py-24">
         <div className="section-x grid items-center gap-12 lg:grid-cols-2">
           <Reveal>
-            <img
+            <Image
               src={opportunities.image.src}
               alt={opportunities.image.alt}
-              loading="lazy"
+              width={1600}
+              height={1067}
               className="h-full max-h-[28rem] w-full rounded-2xl object-cover shadow-lift"
             />
           </Reveal>
@@ -144,9 +136,7 @@ function ServicesPage() {
                   </span>
                   <span>
                     <span className="block font-semibold text-foreground">{benefit.title}</span>
-                    <span className="mt-1 block text-sm text-muted-foreground">
-                      {benefit.description}
-                    </span>
+                    <span className="mt-1 block text-sm text-muted-foreground">{benefit.description}</span>
                   </span>
                 </li>
               ))}

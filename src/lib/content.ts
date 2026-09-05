@@ -2,10 +2,9 @@
  * Content repository.
  *
  * The UI never imports the data modules directly — it calls these getters.
- * Today they resolve from local typed data in `src/data/*`. To move content to
- * a remote store (Vercel Blob JSON, a CMS, or the database), replace the body
- * of `loadContent` with a fetch of the remote JSON and keep the shapes intact.
- * No UI component needs to change.
+ * Today they resolve from local typed data in `src/data/*`. When
+ * BLOB_READ_WRITE_TOKEN is set, `loadContent` tries Vercel Blob JSON at
+ * `napt/content/${key}.json` and falls back to local data on failure.
  */
 import * as aboutData from "@/data/about";
 import * as contactData from "@/data/contact";
@@ -13,10 +12,15 @@ import * as homeData from "@/data/home";
 import * as servicesData from "@/data/services";
 import * as centersData from "@/data/trainingCenters";
 import { siteData } from "@/data/site";
+import { getJson } from "@/lib/blob";
 
-async function loadContent<T>(_key: string, fallback: T): Promise<T> {
-  // Remote source hook: when a content store is configured, fetch
-  // `/napt/content/${_key}.json` here and fall back to local data on failure.
+async function loadContent<T>(key: string, fallback: T): Promise<T> {
+  try {
+    const remote = await getJson<T>(`napt/content/${key}.json`);
+    if (remote) return remote;
+  } catch {
+    // Keep serving local typed data if Blob is unset or unreachable.
+  }
   return fallback;
 }
 
@@ -61,7 +65,10 @@ export const getTrainingCentersContent = () =>
     opportunities: servicesData.opportunities,
   });
 
-export const getTrainingCenters = async () => centersData.trainingCenters;
+export const getTrainingCenters = async () => {
+  const content = await getTrainingCentersContent();
+  return content.centers;
+};
 
 export const getContactContent = () =>
   loadContent("contact", {

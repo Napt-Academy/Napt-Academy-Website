@@ -1,4 +1,4 @@
-import { Link } from "@tanstack/react-router";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { siteData } from "@/data/site";
 import { Reveal } from "./Reveal";
@@ -18,7 +18,7 @@ export function CTASection({
           <p className="max-w-2xl text-cream/75">{body}</p>
           <div className="flex flex-wrap justify-center gap-3">
             <Button asChild size="lg" className="bg-gold text-ink hover:bg-gold-soft">
-              <Link to="/contact-us">Enquire Now</Link>
+              <Link href="/contact-us">Enquire Now</Link>
             </Button>
             <Button
               asChild

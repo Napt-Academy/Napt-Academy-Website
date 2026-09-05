@@ -1,4 +1,4 @@
-import { Link } from "@tanstack/react-router";
+import Link from "next/link";
 import { Facebook, Instagram, Mail, MapPin, MessageCircle, Phone } from "lucide-react";
 import { siteData } from "@/data/site";
 
@@ -39,7 +39,7 @@ export function SiteFooter() {
           <ul className="mt-4 space-y-2 text-sm">
             {siteData.nav.map((item) => (
               <li key={item.to}>
-                <Link to={item.to} className="text-cream/75 transition-colors hover:text-gold">
+                <Link href={item.to} className="text-cream/75 transition-colors hover:text-gold">
                   {item.label}
                 </Link>
               </li>
@@ -54,9 +54,7 @@ export function SiteFooter() {
               <Phone className="mt-0.5 size-4 shrink-0 text-gold" aria-hidden />
               <span className="flex flex-col">
                 <a href={`tel:${siteData.phone.replace(/\s/g, "")}`}>{siteData.phone}</a>
-                <a href={`tel:${siteData.supportPhone.replace(/\s/g, "")}`}>
-                  {siteData.supportPhone}
-                </a>
+                <a href={`tel:${siteData.supportPhone.replace(/\s/g, "")}`}>{siteData.supportPhone}</a>
               </span>
             </li>
             <li className="flex gap-3">
@@ -75,8 +73,8 @@ export function SiteFooter() {
         <div>
           <p className="eyebrow text-gold">{siteData.headOffice}</p>
           <p className="mt-4 text-sm leading-relaxed text-cream/75">
-            Admissions open for Army, Navy, Air Force, Paramilitary, Police, Excise and Forest
-            recruitment batches across all NAPT training centres in Kerala.
+            Admissions open for Army, Navy, Air Force, Paramilitary, Police, Excise and Forest recruitment
+            batches across all NAPT training centres in Kerala.
           </p>
         </div>
       </div>

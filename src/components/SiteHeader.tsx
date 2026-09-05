@@ -1,20 +1,26 @@
+"use client";
+
 import { useEffect, useState } from "react";
-import { Link } from "@tanstack/react-router";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Menu, Phone, X } from "lucide-react";
 import { siteData } from "@/data/site";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 export function SiteHeader({ overlay = false }: { overlay?: boolean }) {
+  const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
     if (!overlay) return;
-    const onScroll = () => setScrolled(window.scrollY > 16);
+    const getY = () =>
+      window.scrollY || document.documentElement.scrollTop || document.body.scrollTop || 0;
+    const onScroll = () => setScrolled(getY() > 16);
     onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    window.addEventListener("scroll", onScroll, { passive: true, capture: true });
+    return () => window.removeEventListener("scroll", onScroll, { capture: true });
   }, [overlay]);
 
   const light = overlay && !scrolled && !open;
@@ -24,13 +30,11 @@ export function SiteHeader({ overlay = false }: { overlay?: boolean }) {
       className={cn(
         "z-50 border-b",
         overlay ? "fixed inset-x-0 top-0" : "sticky top-0",
-        light
-          ? "border-transparent bg-transparent"
-          : "border-border/70 bg-cream/90 backdrop-blur",
+        light ? "border-transparent bg-transparent" : "border-border/70 bg-cream/90 backdrop-blur",
       )}
     >
       <div className="section-x flex h-18 items-center justify-between gap-4 py-3">
-        <Link to="/" className="flex items-center gap-3" aria-label={`${siteData.name} home`}>
+        <Link href="/" className="flex items-center gap-3" aria-label={`${siteData.name} home`}>
           <span className="flex size-10 items-center justify-center rounded-full bg-primary text-sm font-bold tracking-widest text-primary-foreground">
             N
           </span>
@@ -55,21 +59,27 @@ export function SiteHeader({ overlay = false }: { overlay?: boolean }) {
         </Link>
 
         <nav aria-label="Main" className="hidden items-center gap-1 lg:flex">
-          {siteData.nav.map((item) => (
-            <Link
-              key={item.to}
-              to={item.to}
-              activeProps={{ className: light ? "text-gold" : "text-primary" }}
-              className={cn(
-                "rounded-md px-3 py-2 text-sm font-medium transition-colors",
-                light
-                  ? "text-cream/85 hover:text-gold"
-                  : "text-foreground/75 hover:text-primary",
-              )}
-            >
-              {item.label}
-            </Link>
-          ))}
+          {siteData.nav.map((item) => {
+            const active = pathname === item.to;
+            return (
+              <Link
+                key={item.to}
+                href={item.to}
+                className={cn(
+                  "rounded-md px-3 py-2 text-sm font-medium transition-colors",
+                  light
+                    ? active
+                      ? "text-gold"
+                      : "text-cream/85 hover:text-gold"
+                    : active
+                      ? "text-primary"
+                      : "text-foreground/75 hover:text-primary",
+                )}
+              >
+                {item.label}
+              </Link>
+            );
+          })}
         </nav>
 
         <div className="hidden lg:block">
@@ -101,10 +111,12 @@ export function SiteHeader({ overlay = false }: { overlay?: boolean }) {
             {siteData.nav.map((item) => (
               <Link
                 key={item.to}
-                to={item.to}
+                href={item.to}
                 onClick={() => setOpen(false)}
-                activeProps={{ className: "text-primary" }}
-                className="rounded-md px-2 py-3 text-sm font-medium text-foreground/80"
+                className={cn(
+                  "rounded-md px-2 py-3 text-sm font-medium",
+                  pathname === item.to ? "text-primary" : "text-foreground/80",
+                )}
               >
                 {item.label}
               </Link>

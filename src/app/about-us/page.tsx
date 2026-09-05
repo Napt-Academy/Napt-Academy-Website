@@ -1,4 +1,5 @@
-import { createFileRoute } from "@tanstack/react-router";
+import type { Metadata } from "next";
+import Image from "next/image";
 import { Check } from "lucide-react";
 import { getAboutContent } from "@/lib/content";
 import { SiteLayout } from "@/components/SiteLayout";
@@ -12,26 +13,26 @@ const title = "About Us | NAPT Academy — Defence Training Institute in Wayanad
 const description =
   "Since 2012, NAPT Academy has prepared Kerala aspirants for defence, paramilitary and police careers with retired officers, expert faculty and a discipline-first routine.";
 
-export const Route = createFileRoute("/about-us")({
-  loader: () => getAboutContent(),
-  head: () => ({
-    meta: [
-      { title },
-      { name: "description", content: description },
-      { property: "og:title", content: title },
-      { property: "og:description", content: description },
-      { property: "og:type", content: "website" },
-      { property: "og:url", content: "/about-us" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-    links: [{ rel: "canonical", href: "/about-us" }],
-  }),
-  component: AboutPage,
-});
+export const metadata: Metadata = {
+  title,
+  description,
+  alternates: { canonical: "/about-us" },
+  openGraph: {
+    title,
+    description,
+    type: "website",
+    url: "/about-us",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title,
+    description,
+  },
+};
 
-function AboutPage() {
+export default async function AboutPage() {
   const { hero, missionVision, expertTeamIntro, credentials, teamSection, team } =
-    Route.useLoaderData();
+    await getAboutContent();
 
   return (
     <SiteLayout>
@@ -40,10 +41,11 @@ function AboutPage() {
       <section className="py-16 sm:py-24">
         <div className="section-x grid items-center gap-12 lg:grid-cols-2">
           <Reveal>
-            <img
+            <Image
               src={missionVision.image.src}
               alt={missionVision.image.alt}
-              loading="lazy"
+              width={1600}
+              height={1067}
               className="h-full max-h-[30rem] w-full rounded-2xl object-cover shadow-lift"
             />
           </Reveal>
@@ -83,10 +85,11 @@ function AboutPage() {
             </ul>
           </Reveal>
           <Reveal delay={120}>
-            <img
+            <Image
               src={expertTeamIntro.image.src}
               alt={expertTeamIntro.image.alt}
-              loading="lazy"
+              width={1600}
+              height={1067}
               className="h-full max-h-[30rem] w-full rounded-2xl object-cover shadow-lift"
             />
           </Reveal>
@@ -95,12 +98,7 @@ function AboutPage() {
 
       <section className="bg-forest py-16 text-cream sm:py-24">
         <div className="section-x">
-          <SectionHeading
-            inverted
-            eyebrow="Credentials"
-            title={credentials.heading}
-            body={credentials.body}
-          />
+          <SectionHeading inverted eyebrow="Credentials" title={credentials.heading} body={credentials.body} />
           <div className="mt-12 grid gap-6 sm:grid-cols-2">
             {credentials.items.map((item, i) => (
               <Reveal key={item.id} delay={i * 80}>
@@ -124,10 +122,11 @@ function AboutPage() {
             {team.map((member, i) => (
               <Reveal key={member.id} delay={i * 60}>
                 <article className="overflow-hidden rounded-2xl border border-border bg-card shadow-card">
-                  <img
+                  <Image
                     src={member.image.src}
                     alt={member.image.alt}
-                    loading="lazy"
+                    width={640}
+                    height={800}
                     className="h-60 w-full object-cover"
                   />
                   <div className="p-5">

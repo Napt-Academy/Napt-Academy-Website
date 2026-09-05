@@ -1,4 +1,5 @@
-import { Link } from "@tanstack/react-router";
+import Image from "next/image";
+import Link from "next/link";
 import type { ImageAsset } from "@/types";
 
 export function PageHero({
@@ -12,16 +13,18 @@ export function PageHero({
 }) {
   return (
     <section className="relative isolate flex min-h-[42vh] items-end overflow-hidden sm:min-h-[52vh]">
-      <img
+      <Image
         src={image.src}
         alt={image.alt}
-        className="absolute inset-0 -z-20 h-full w-full object-cover"
-        loading="eager"
+        fill
+        priority
+        sizes="100vw"
+        className="-z-20 object-cover"
       />
       <div className="hero-overlay absolute inset-0 -z-10" />
       <div className="section-x pb-12 sm:pb-16">
         <nav aria-label="Breadcrumb" className="mb-4 text-sm text-cream/70">
-          <Link to="/" className="transition-colors hover:text-gold">
+          <Link href="/" className="transition-colors hover:text-gold">
             Home
           </Link>
           <span className="mx-2">/</span>

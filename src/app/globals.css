@@ -1,5 +1,5 @@
 @import "tailwindcss" source(none);
-@source "../src";
+@source "..";
 @import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
@@ -46,8 +46,8 @@
   --color-charcoal: var(--charcoal);
   --color-ink: var(--ink);
 
-  --font-display: "Playfair Display", ui-serif, Georgia, serif;
-  --font-sans: "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-playfair), "Playfair Display", ui-serif, Georgia, serif;
+  --font-sans: var(--font-manrope), "Manrope", ui-sans-serif, system-ui, sans-serif;
 
   --shadow-card: 0 12px 34px -22px oklch(0.25 0.04 120 / 0.45);
   --shadow-lift: 0 24px 50px -28px oklch(0.25 0.04 120 / 0.55);
@@ -101,7 +101,7 @@
     color: var(--color-foreground);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
-    overflow-x: hidden;
+    overflow-x: clip;
   }
 
   h1,
@@ -147,10 +147,7 @@
 
 @utility grain-surface {
   background-color: var(--cream);
-  background-image: radial-gradient(
-    oklch(0.42 0.075 116 / 0.07) 1px,
-    transparent 1px
-  );
+  background-image: radial-gradient(oklch(0.42 0.075 116 / 0.07) 1px, transparent 1px);
   background-size: 18px 18px;
 }
 

@@ -1,4 +1,6 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import type { Metadata } from "next";
+import Image from "next/image";
+import Link from "next/link";
 import { Star } from "lucide-react";
 import { getHomeContent } from "@/lib/content";
 import { siteData } from "@/data/site";
@@ -7,6 +9,7 @@ import { SectionHeading } from "@/components/SectionHeading";
 import { Reveal } from "@/components/Reveal";
 import { Icon } from "@/components/Icon";
 import { CTASection } from "@/components/CTASection";
+import { JsonLd } from "@/components/JsonLd";
 import { Button } from "@/components/ui/button";
 import {
   Carousel,
@@ -20,23 +23,30 @@ const title = "NAPT Academy | Defence, Police & Paramilitary Coaching in Kerala"
 const description =
   "NAPT Academy trains aspirants for Army, Navy, Air Force, paramilitary, police, excise and forest recruitment with physical, written and interview coaching across Kerala.";
 
-export const Route = createFileRoute("/")({
-  loader: () => getHomeContent(),
-  head: () => ({
-    meta: [
-      { title },
-      { name: "description", content: description },
-      { property: "og:title", content: title },
-      { property: "og:description", content: description },
-      { property: "og:type", content: "website" },
-      { property: "og:url", content: "/" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-    links: [{ rel: "canonical", href: "/" }],
-    scripts: [
-      {
-        type: "application/ld+json",
-        children: JSON.stringify({
+export const metadata: Metadata = {
+  title,
+  description,
+  alternates: { canonical: "/" },
+  openGraph: {
+    title,
+    description,
+    type: "website",
+    url: "/",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title,
+    description,
+  },
+};
+
+export default async function HomePage() {
+  const { hero, serviceCategories, values, career, gallery, testimonials } = await getHomeContent();
+
+  return (
+    <SiteLayout overlayHeader>
+      <JsonLd
+        data={{
           "@context": "https://schema.org",
           "@type": "EducationalOrganization",
           name: siteData.name,
@@ -51,25 +61,17 @@ export const Route = createFileRoute("/")({
             postalCode: "670645",
             addressCountry: "IN",
           },
-        }),
-      },
-    ],
-  }),
-  component: HomePage,
-});
-
-function HomePage() {
-  const { hero, serviceCategories, values, career, gallery, testimonials } = Route.useLoaderData();
-
-  return (
-    <SiteLayout overlayHeader>
+        }}
+      />
       {/* Hero */}
       <section className="relative isolate flex h-svh min-h-svh w-full items-center overflow-hidden">
-        <img
+        <Image
           src={hero.image.src}
           alt={hero.image.alt}
-          className="absolute inset-0 -z-20 h-full w-full object-cover"
-          loading="eager"
+          fill
+          priority
+          sizes="100vw"
+          className="-z-20 object-cover"
         />
         <div className="hero-overlay absolute inset-0 -z-10" />
         <div className="section-x py-24 pt-28">
@@ -87,7 +89,7 @@ function HomePage() {
             </p>
             <div className="animate-rise mt-8 flex flex-wrap gap-3">
               <Button asChild size="lg" className="bg-gold text-ink hover:bg-gold-soft">
-                <Link to="/contact-us">Join a Batch</Link>
+                <Link href="/contact-us">Join a Batch</Link>
               </Button>
               <Button
                 asChild
@@ -95,7 +97,7 @@ function HomePage() {
                 variant="outline"
                 className="border-cream/40 bg-transparent text-cream hover:bg-cream/10 hover:text-cream"
               >
-                <Link to="/services">Explore Training</Link>
+                <Link href="/services">Explore Training</Link>
               </Button>
             </div>
           </div>
@@ -221,10 +223,11 @@ function HomePage() {
             {gallery.images.map((image, i) => (
               <Reveal key={image.src} delay={i * 70}>
                 <figure className="group overflow-hidden rounded-2xl shadow-card">
-                  <img
+                  <Image
                     src={image.src}
                     alt={image.alt}
-                    loading="lazy"
+                    width={800}
+                    height={512}
                     className="h-64 w-full object-cover transition-transform duration-700 group-hover:scale-105"
                   />
                 </figure>
@@ -251,9 +254,7 @@ function HomePage() {
                       <Star
                         key={idx}
                         aria-hidden
-                        className={
-                          idx < t.rating ? "size-4 fill-gold text-gold" : "size-4 text-border"
-                        }
+                        className={idx < t.rating ? "size-4 fill-gold text-gold" : "size-4 text-border"}
                       />
                     ))}
                   </div>
@@ -278,17 +279,18 @@ function ForceTile({
   alt,
 }: {
   title: string;
-  subtitle?: string;
+  subtitle?: string | undefined;
   src: string;
   alt: string;
 }) {
   return (
     <article className="group relative h-72 overflow-hidden rounded-2xl shadow-card">
-      <img
+      <Image
         src={src}
         alt={alt}
-        loading="lazy"
-        className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+        fill
+        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+        className="object-cover transition-transform duration-700 group-hover:scale-105"
       />
       <div className="hero-overlay absolute inset-0" />
       <div className="absolute inset-x-0 bottom-0 p-6">

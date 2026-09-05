@@ -1,4 +1,5 @@
-import { createFileRoute } from "@tanstack/react-router";
+import type { Metadata } from "next";
+import Image from "next/image";
 import { MapPin, MessageCircle, Phone } from "lucide-react";
 import { getTrainingCentersContent } from "@/lib/content";
 import { SiteLayout } from "@/components/SiteLayout";
@@ -12,25 +13,25 @@ const title = "Our Training Centers | NAPT Academy Across Kerala";
 const description =
   "Find your nearest NAPT Academy training centre — Kozhikode, Malappuram, Kannur, Ernakulam, Trivandrum, Wayanad and more — with contact numbers and directions.";
 
-export const Route = createFileRoute("/our-training-centers")({
-  loader: () => getTrainingCentersContent(),
-  head: () => ({
-    meta: [
-      { title },
-      { name: "description", content: description },
-      { property: "og:title", content: title },
-      { property: "og:description", content: description },
-      { property: "og:type", content: "website" },
-      { property: "og:url", content: "/our-training-centers" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-    links: [{ rel: "canonical", href: "/our-training-centers" }],
-  }),
-  component: CentersPage,
-});
+export const metadata: Metadata = {
+  title,
+  description,
+  alternates: { canonical: "/our-training-centers" },
+  openGraph: {
+    title,
+    description,
+    type: "website",
+    url: "/our-training-centers",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title,
+    description,
+  },
+};
 
-function CentersPage() {
-  const { hero, intro, centers, feature, opportunities } = Route.useLoaderData();
+export default async function CentersPage() {
+  const { hero, intro, centers, feature, opportunities } = await getTrainingCentersContent();
 
   return (
     <SiteLayout>
@@ -42,10 +43,11 @@ function CentersPage() {
             <SectionHeading align="left" eyebrow="Our Network" title={intro.heading} body={intro.body} />
           </Reveal>
           <Reveal delay={120}>
-            <img
+            <Image
               src={intro.image.src}
               alt={intro.image.alt}
-              loading="lazy"
+              width={1600}
+              height={1067}
               className="h-full max-h-[26rem] w-full rounded-2xl object-cover shadow-lift"
             />
           </Reveal>
@@ -107,11 +109,12 @@ function CentersPage() {
       </section>
 
       <section className="relative isolate overflow-hidden py-20 text-cream sm:py-28">
-        <img
+        <Image
           src={feature.image.src}
           alt={feature.image.alt}
-          loading="lazy"
-          className="absolute inset-0 -z-20 h-full w-full object-cover"
+          fill
+          sizes="100vw"
+          className="-z-20 object-cover"
         />
         <div className="hero-overlay absolute inset-0 -z-10" />
         <div className="section-x">
@@ -133,9 +136,7 @@ function CentersPage() {
                     <Icon name={benefit.icon} className="size-6" />
                   </span>
                   <h3 className="mt-5 text-lg font-semibold text-foreground">{benefit.title}</h3>
-                  <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-                    {benefit.description}
-                  </p>
+                  <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{benefit.description}</p>
                 </article>
               </Reveal>
             ))}
@@ -143,7 +144,10 @@ function CentersPage() {
         </div>
       </section>
 
-      <CTASection heading="Not Sure Which Centre Suits You?" body="Share your location and target recruitment — we will recommend the right batch." />
+      <CTASection
+        heading="Not Sure Which Centre Suits You?"
+        body="Share your location and target recruitment — we will recommend the right batch."
+      />
     </SiteLayout>
   );
 }
