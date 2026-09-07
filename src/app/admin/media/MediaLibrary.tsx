@@ -31,7 +31,9 @@ export function MediaLibrary({ initialItems }: { initialItems: MediaRow[] }) {
         setMessage(payload.error ?? "Upload failed");
         return;
       }
-      setMessage(`Uploaded ${payload.urls?.length ?? 0} image(s). Refresh if new rows do not appear.`);
+      setMessage(
+        `Uploaded ${payload.urls?.length ?? 0} image(s). Refresh if new rows do not appear.`,
+      );
       window.location.reload();
     } catch {
       setMessage("Upload failed");
@@ -69,9 +71,19 @@ export function MediaLibrary({ initialItems }: { initialItems: MediaRow[] }) {
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {items.map((item) => (
-            <article key={item.id} className="overflow-hidden rounded-xl border border-border bg-card shadow-card">
+            <article
+              key={item.id}
+              className="overflow-hidden rounded-xl border border-border bg-card shadow-card"
+            >
               <div className="relative aspect-video bg-muted">
-                <Image src={item.url} alt={item.alt || ""} fill className="object-cover" sizes="320px" />
+                <Image
+                  src={item.url}
+                  alt={item.alt || ""}
+                  fill
+                  unoptimized={item.url.includes("blob.vercel-storage.com")}
+                  className="object-cover"
+                  sizes="320px"
+                />
               </div>
               <div className="space-y-2 p-3">
                 <input

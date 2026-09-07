@@ -454,6 +454,7 @@ function ImageSlot({
             src={src}
             alt=""
             fill
+            unoptimized={src.includes("blob.vercel-storage.com")}
             sizes="(max-width: 1024px) 100vw, 40vw"
             className="object-cover"
           />
