@@ -12,6 +12,7 @@ export const centersHero = {
 };
 
 export const centersIntro = {
+  eyebrow: "Our Network",
   heading: "Elite Physical and Academic Training to the aspirants for Armed Forces",
   body: "Our training centre is dedicated to delivering high quality physical and academic training for the energetic youngsters joining any Navy, Airforce, Para Military, Police, Excise, Forest departments.",
   image: {
@@ -114,6 +115,12 @@ export const trainingCenters: TrainingCenter[] = [
   },
 ];
 
+export const locationsIntro = {
+  eyebrow: "Locations",
+  heading: "Centres Across Kerala",
+  body: "Train at the centre closest to you — every location follows the same curriculum and fitness benchmarks.",
+};
+
 export const centerFeature = {
   title: "Elite Defense & Security Training Center",
   body: "Join the ranks of tomorrow's protectors with our all-in-one training program designed to prepare aspirants for Army, Police, and other uniformed jobs. We offer expert physical training, exam preparation, and real-life technical skills to help students succeed in competitive defence and security careers.",
@@ -121,4 +128,9 @@ export const centerFeature = {
     src: u("photo-1571902943202-507ec2618e8f", 1920),
     alt: "Aspirants performing a group training drill at a NAPT centre",
   } as ImageAsset,
+};
+
+export const centersCta = {
+  heading: "Not Sure Which Centre Suits You?",
+  body: "Share your location and target recruitment — we will recommend the right batch.",
 };

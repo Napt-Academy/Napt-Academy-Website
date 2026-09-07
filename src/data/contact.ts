@@ -26,9 +26,7 @@ export const contactChannels: ContactChannel[] = [
     id: "email",
     title: "Email",
     icon: "Mail",
-    lines: [
-      { label: "Support or Info", value: siteData.email, href: `mailto:${siteData.email}` },
-    ],
+    lines: [{ label: "Support or Info", value: siteData.email, href: `mailto:${siteData.email}` }],
   },
   {
     id: "address",
@@ -45,4 +43,9 @@ export const contactChannels: ContactChannel[] = [
 export const contactForm = {
   heading: "Get In Touch",
   body: "Tell us which centre you would like to train at and our coordinator will get back to you with batch timings, eligibility and admission details.",
+};
+
+export const contactCta = {
+  heading: "Prefer To Call?",
+  body: "Our admissions team is available across all Kerala centres.",
 };

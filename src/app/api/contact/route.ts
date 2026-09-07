@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { contactFormSchema } from "@/lib/contact-schema";
 import { getTrainingCenters } from "@/lib/content";
+import { insertEnquiry } from "@/lib/db/queries";
 
 export async function POST(request: Request) {
   try {
@@ -21,13 +22,16 @@ export async function POST(request: Request) {
       return NextResponse.json({ ok: false, error: "Please choose a valid centre" }, { status: 400 });
     }
 
-    // Structured payload for a future email/CRM integration.
     const enquiry = {
-      ...parsed.data,
+      name: parsed.data.name,
+      centerId: parsed.data.center,
       centerName: center.name,
-      receivedAt: new Date().toISOString(),
+      subject: parsed.data.subject,
+      message: parsed.data.message,
     };
-    console.info("[contact-enquiry]", enquiry);
+
+    await insertEnquiry(enquiry);
+    console.info("[contact-enquiry]", { ...enquiry, receivedAt: new Date().toISOString() });
 
     return NextResponse.json({ ok: true });
   } catch {

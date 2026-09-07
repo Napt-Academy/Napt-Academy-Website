@@ -17,6 +17,9 @@ dist-ssr
 .next
 out
 *.local
+.env
+.env.local
+
 
 # Wrangler / Cloudflare
 .wrangler/

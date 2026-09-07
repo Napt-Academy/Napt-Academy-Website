@@ -12,6 +12,7 @@ export const aboutHero = {
 };
 
 export const missionVision = {
+  eyebrow: "Since 2012",
   heading: "Our Mission & Vision",
   paragraphs: [
     "At NAPT Academy Panamaram, we are dedicated to shaping disciplined, motivated individuals equipped for success in India's defence, paramilitary, and police services.",
@@ -25,6 +26,7 @@ export const missionVision = {
 };
 
 export const expertTeamIntro = {
+  eyebrow: "Expertise",
   heading: "Your Success, Our Expert Team",
   paragraphs: [
     "NAPT Academy is led by experienced defence officers and retired officials who have lived the selection process from the inside, alongside academic mentors who specialise in recruitment syllabi.",
@@ -45,6 +47,7 @@ export const expertTeamIntro = {
 };
 
 export const credentials = {
+  eyebrow: "Credentials",
   heading: "Official Credentials & Accreditation",
   body: "NAPT Academy operates as a registered pre-recruitment training institute with a documented track record across defence, paramilitary and state uniformed service recruitment drives in Kerala.",
   items: [
@@ -80,6 +83,7 @@ export const credentials = {
 };
 
 export const teamSection = {
+  eyebrow: "Our Team",
   heading: "Your Success, Our Expert Team",
   body: "At NAPT Academy, our expert team—including seasoned educators and retired officers—offers focused guidance and real-world insights to help students succeed in competitive exams with confidence and clarity.",
 };
@@ -89,48 +93,77 @@ export const teamMembers: TeamMember[] = [
     id: "tm1",
     name: "Col. Rajeev Menon (Retd.)",
     designation: "Director & Chief Mentor",
-    image: { src: u("photo-1560250097-0b93528c311a", 800), alt: "Portrait of the academy director" },
+    image: {
+      src: u("photo-1560250097-0b93528c311a", 800),
+      alt: "Portrait of the academy director",
+    },
   },
   {
     id: "tm2",
     name: "Sub. Maj. Thomas Kurian (Retd.)",
     designation: "Head of Physical Training",
-    image: { src: u("photo-1519085360753-af0119f7cbe7", 800), alt: "Portrait of the head physical trainer" },
+    image: {
+      src: u("photo-1519085360753-af0119f7cbe7", 800),
+      alt: "Portrait of the head physical trainer",
+    },
   },
   {
     id: "tm3",
     name: "Anitha Ravindran",
     designation: "Academic Coordinator",
-    image: { src: u("photo-1573497019940-1c28c88b4f3e", 800), alt: "Portrait of the academic coordinator" },
+    image: {
+      src: u("photo-1573497019940-1c28c88b4f3e", 800),
+      alt: "Portrait of the academic coordinator",
+    },
   },
   {
     id: "tm4",
     name: "Hav. Suresh Babu (Retd.)",
     designation: "SSB & Interview Mentor",
-    image: { src: u("photo-1500648767791-00dcc994a43e", 800), alt: "Portrait of the interview mentor" },
+    image: {
+      src: u("photo-1500648767791-00dcc994a43e", 800),
+      alt: "Portrait of the interview mentor",
+    },
   },
   {
     id: "tm5",
     name: "Nithin Joseph",
     designation: "Mathematics & Reasoning Faculty",
-    image: { src: u("photo-1507003211169-0a1dd7228f2d", 800), alt: "Portrait of the mathematics faculty" },
+    image: {
+      src: u("photo-1507003211169-0a1dd7228f2d", 800),
+      alt: "Portrait of the mathematics faculty",
+    },
   },
   {
     id: "tm6",
     name: "Devika Nair",
     designation: "English & Communication Faculty",
-    image: { src: u("photo-1580489944761-15a19d654956", 800), alt: "Portrait of the English faculty" },
+    image: {
+      src: u("photo-1580489944761-15a19d654956", 800),
+      alt: "Portrait of the English faculty",
+    },
   },
   {
     id: "tm7",
     name: "Arun Kumar P",
     designation: "Ground Training Instructor",
-    image: { src: u("photo-1506794778202-cad84cf45f1d", 800), alt: "Portrait of a ground training instructor" },
+    image: {
+      src: u("photo-1506794778202-cad84cf45f1d", 800),
+      alt: "Portrait of a ground training instructor",
+    },
   },
   {
     id: "tm8",
     name: "Reshma Thomas",
     designation: "Student Counsellor",
-    image: { src: u("photo-1487412720507-e7ab37603c6f", 800), alt: "Portrait of the student counsellor" },
+    image: {
+      src: u("photo-1487412720507-e7ab37603c6f", 800),
+      alt: "Portrait of the student counsellor",
+    },
   },
 ];
+
+export const aboutCta = {
+  heading: "Ready to Start Your Journey Into Uniform?",
+  body: "Talk to a NAPT coordinator about batch timings, eligibility and the centre closest to you.",
+};

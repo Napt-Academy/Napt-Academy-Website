@@ -1,16 +1,16 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { Star } from "lucide-react";
-import { getHomeContent } from "@/lib/content";
-import { siteData } from "@/data/site";
+import { getHomeContent, getSiteContent } from "@/lib/content";
 import { SiteLayout } from "@/components/SiteLayout";
 import { SectionHeading } from "@/components/SectionHeading";
 import { Reveal } from "@/components/Reveal";
 import { Icon } from "@/components/Icon";
 import { CTASection } from "@/components/CTASection";
 import { JsonLd } from "@/components/JsonLd";
+import { ResponsiveImage } from "@/components/ResponsiveImage";
 import { Button } from "@/components/ui/button";
+import type { ImageAsset } from "@/types";
 import {
   Carousel,
   CarouselContent,
@@ -22,6 +22,8 @@ import {
 const title = "NAPT Academy | Defence, Police & Paramilitary Coaching in Kerala";
 const description =
   "NAPT Academy trains aspirants for Army, Navy, Air Force, paramilitary, police, excise and forest recruitment with physical, written and interview coaching across Kerala.";
+
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title,
@@ -41,7 +43,21 @@ export const metadata: Metadata = {
 };
 
 export default async function HomePage() {
-  const { hero, serviceCategories, values, career, gallery, testimonials } = await getHomeContent();
+  const [
+    {
+      hero,
+      trainingIntro,
+      serviceCategories,
+      valuesIntro,
+      values,
+      career,
+      gallery,
+      testimonials,
+      testimonialsIntro,
+      cta,
+    },
+    site,
+  ] = await Promise.all([getHomeContent(), getSiteContent()]);
 
   return (
     <SiteLayout overlayHeader>
@@ -49,10 +65,10 @@ export default async function HomePage() {
         data={{
           "@context": "https://schema.org",
           "@type": "EducationalOrganization",
-          name: siteData.name,
+          name: site.name,
           description,
-          telephone: siteData.phone,
-          email: siteData.email,
+          telephone: site.phone,
+          email: site.email,
           address: {
             "@type": "PostalAddress",
             streetAddress: "NAPT Academy Plaza Building, Near KSFE, Panamaram",
@@ -65,9 +81,8 @@ export default async function HomePage() {
       />
       {/* Hero */}
       <section className="relative isolate flex h-svh min-h-svh w-full items-center overflow-hidden">
-        <Image
-          src={hero.image.src}
-          alt={hero.image.alt}
+        <ResponsiveImage
+          image={hero.image}
           fill
           priority
           sizes="100vw"
@@ -89,7 +104,7 @@ export default async function HomePage() {
             </p>
             <div className="animate-rise mt-8 flex flex-wrap gap-3">
               <Button asChild size="lg" className="bg-gold text-ink hover:bg-gold-soft">
-                <Link href="/contact-us">Join a Batch</Link>
+                <Link href={hero.primaryCta.href}>{hero.primaryCta.label}</Link>
               </Button>
               <Button
                 asChild
@@ -97,7 +112,7 @@ export default async function HomePage() {
                 variant="outline"
                 className="border-cream/40 bg-transparent text-cream hover:bg-cream/10 hover:text-cream"
               >
-                <Link href="/services">Explore Training</Link>
+                <Link href={hero.secondaryCta.href}>{hero.secondaryCta.label}</Link>
               </Button>
             </div>
           </div>
@@ -108,9 +123,9 @@ export default async function HomePage() {
       <section className="grain-surface py-16 sm:py-24">
         <div className="section-x space-y-16">
           <SectionHeading
-            eyebrow="What We Train For"
-            title="Preparation For Every Uniformed Career"
-            body="Structured physical, academic and interview training aligned to current recruitment standards across the armed forces, paramilitary and state services."
+            eyebrow={trainingIntro.eyebrow}
+            title={trainingIntro.heading}
+            body={trainingIntro.body}
           />
 
           {serviceCategories.map((category) => (
@@ -122,12 +137,7 @@ export default async function HomePage() {
                   <CarouselContent>
                     {category.items.map((item) => (
                       <CarouselItem key={item.id} className="sm:basis-1/2 lg:basis-1/3">
-                        <ForceTile
-                          title={item.title}
-                          subtitle={item.subtitle}
-                          src={item.image.src}
-                          alt={item.image.alt}
-                        />
+                        <ForceTile title={item.title} subtitle={item.subtitle} image={item.image} />
                       </CarouselItem>
                     ))}
                   </CarouselContent>
@@ -138,12 +148,7 @@ export default async function HomePage() {
                 <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                   {category.items.map((item, i) => (
                     <Reveal key={item.id} delay={i * 80}>
-                      <ForceTile
-                        title={item.title}
-                        subtitle={item.subtitle}
-                        src={item.image.src}
-                        alt={item.image.alt}
-                      />
+                      <ForceTile title={item.title} subtitle={item.subtitle} image={item.image} />
                     </Reveal>
                   ))}
                 </div>
@@ -157,10 +162,10 @@ export default async function HomePage() {
       <section className="bg-forest py-16 text-cream sm:py-24">
         <div className="section-x">
           <SectionHeading
-            eyebrow="Who We Are"
-            title="Mission, Vision & Values"
+            eyebrow={valuesIntro.eyebrow}
+            title={valuesIntro.heading}
             inverted
-            body="The principles that shape every batch we train."
+            body={valuesIntro.body}
           />
           <div className="mt-12 grid gap-6 lg:grid-cols-3">
             {values.map((value, i) => (
@@ -182,7 +187,12 @@ export default async function HomePage() {
       <section className="py-16 sm:py-24">
         <div className="section-x grid items-center gap-12 lg:grid-cols-2">
           <Reveal>
-            <SectionHeading align="left" eyebrow="Our Track Record" title={career.heading} body={career.body} />
+            <SectionHeading
+              align="left"
+              eyebrow={career.eyebrow}
+              title={career.heading}
+              body={career.body}
+            />
           </Reveal>
           <Reveal delay={120}>
             <div className="grid gap-5 sm:grid-cols-3 lg:grid-cols-1">
@@ -218,14 +228,13 @@ export default async function HomePage() {
       {/* Gallery */}
       <section className="grain-surface py-16 sm:py-24">
         <div className="section-x">
-          <SectionHeading eyebrow="Gallery" title={gallery.heading} body={gallery.body} />
+          <SectionHeading eyebrow={gallery.eyebrow} title={gallery.heading} body={gallery.body} />
           <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {gallery.images.map((image, i) => (
               <Reveal key={image.src} delay={i * 70}>
                 <figure className="group overflow-hidden rounded-2xl shadow-card">
-                  <Image
-                    src={image.src}
-                    alt={image.alt}
+                  <ResponsiveImage
+                    image={image}
                     width={800}
                     height={512}
                     className="h-64 w-full object-cover transition-transform duration-700 group-hover:scale-105"
@@ -241,9 +250,9 @@ export default async function HomePage() {
       <section className="py-16 sm:py-24">
         <div className="section-x">
           <SectionHeading
-            eyebrow="Testimonials"
-            title="Words From Our Aspirants"
-            body="Candidates who trained with NAPT and went on to clear their selection process."
+            eyebrow={testimonialsIntro.eyebrow}
+            title={testimonialsIntro.heading}
+            body={testimonialsIntro.body}
           />
           <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {testimonials.map((t, i) => (
@@ -254,7 +263,9 @@ export default async function HomePage() {
                       <Star
                         key={idx}
                         aria-hidden
-                        className={idx < t.rating ? "size-4 fill-gold text-gold" : "size-4 text-border"}
+                        className={
+                          idx < t.rating ? "size-4 fill-gold text-gold" : "size-4 text-border"
+                        }
                       />
                     ))}
                   </div>
@@ -267,7 +278,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <CTASection />
+      <CTASection heading={cta.heading} body={cta.body} />
     </SiteLayout>
   );
 }
@@ -275,19 +286,16 @@ export default async function HomePage() {
 function ForceTile({
   title,
   subtitle,
-  src,
-  alt,
+  image,
 }: {
   title: string;
   subtitle?: string | undefined;
-  src: string;
-  alt: string;
+  image: ImageAsset;
 }) {
   return (
     <article className="group relative h-72 overflow-hidden rounded-2xl shadow-card">
-      <Image
-        src={src}
-        alt={alt}
+      <ResponsiveImage
+        image={image}
         fill
         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
         className="object-cover transition-transform duration-700 group-hover:scale-105"

@@ -1,11 +1,4 @@
-import type {
-  ForceCard,
-  ImageAsset,
-  ServiceCategory,
-  Stat,
-  Testimonial,
-  ValueCard,
-} from "@/types";
+import type { ForceCard, ImageAsset, ServiceCategory, Stat, Testimonial, ValueCard } from "@/types";
 
 const u = (id: string, w = 1200) =>
   `https://images.unsplash.com/${id}?auto=format&fit=crop&w=${w}&q=80`;
@@ -14,6 +7,8 @@ export const heroContent = {
   eyebrow: "CAREER",
   heading: ["Guiding", "Warriors to the", "Right Path"],
   body: "Step into a place of discipline, purpose, and service. We help aspiring candidates prepare for recruitment and succeed in the selection process.",
+  primaryCta: { label: "Join a Batch", href: "/contact-us" },
+  secondaryCta: { label: "Explore Training", href: "/services" },
   image: {
     src: u("photo-1541873676-a18131494184", 1920),
     alt: "Soldiers in formation during a military training exercise at dawn",
@@ -95,6 +90,18 @@ export const serviceCategories: ServiceCategory[] = [
   { id: "police", title: "Police Forces (Physical Training)", items: police, carousel: true },
 ];
 
+export const trainingIntro = {
+  eyebrow: "What We Train For",
+  heading: "Preparation For Every Uniformed Career",
+  body: "Structured physical, academic and interview training aligned to current recruitment standards across the armed forces, paramilitary and state services.",
+};
+
+export const valuesIntro = {
+  eyebrow: "Who We Are",
+  heading: "Mission, Vision & Values",
+  body: "The principles that shape every batch we train.",
+};
+
 export const missionVisionValues: ValueCard[] = [
   {
     id: "mission",
@@ -120,6 +127,7 @@ export const missionVisionValues: ValueCard[] = [
 ];
 
 export const careerSection = {
+  eyebrow: "Our Track Record",
   heading: ["Building Careers", "That Serve The", "Nation"],
   body: "NAPT is dedicated to guiding candidates toward prestigious careers in the Indian Armed Forces — Army, Air Force and Coast Guard — through proven methodologies, expert trainers, and strong institutional networks.",
   stats: [
@@ -136,6 +144,7 @@ export const careerSection = {
 };
 
 export const gallery = {
+  eyebrow: "Gallery",
   heading: ["Moments of Pride and", "Preparation"],
   body: "Explore snapshots from our training sessions, student achievements, and special events that showcase the discipline, determination, and spirit of our future warriors.",
   images: [
@@ -192,3 +201,14 @@ export const testimonials: Testimonial[] = [
       "The team keeps you updated on every recruitment notification and eligibility change. That guidance alone saved me from missing an application deadline.",
   },
 ];
+
+export const testimonialsIntro = {
+  eyebrow: "Testimonials",
+  heading: "Words From Our Aspirants",
+  body: "Candidates who trained with NAPT and went on to clear their selection process.",
+};
+
+export const homeCta = {
+  heading: "Ready to Start Your Journey Into Uniform?",
+  body: "Talk to a NAPT coordinator about batch timings, eligibility and the centre closest to you.",
+};

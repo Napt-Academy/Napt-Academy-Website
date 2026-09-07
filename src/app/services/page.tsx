@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import { getServicesContent } from "@/lib/content";
 import { SiteLayout } from "@/components/SiteLayout";
 import { PageHero } from "@/components/PageHero";
@@ -8,6 +7,7 @@ import { Reveal } from "@/components/Reveal";
 import { Icon } from "@/components/Icon";
 import { CTASection } from "@/components/CTASection";
 import { JsonLd } from "@/components/JsonLd";
+import { ResponsiveImage } from "@/components/ResponsiveImage";
 import {
   Accordion,
   AccordionContent,
@@ -18,6 +18,8 @@ import {
 const title = "Services | Physical, Written & SSB Training — NAPT Academy";
 const description =
   "Physical fitness conditioning, entrance exam coaching, SSB and interview training, plus recruitment alerts and eligibility guidance for defence and police aspirants.";
+
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title,
@@ -37,7 +39,18 @@ export const metadata: Metadata = {
 };
 
 export default async function ServicesPage() {
-  const { hero, services, commitment, opportunities, eligibility, faqs } = await getServicesContent();
+  const {
+    hero,
+    servicesIntro,
+    services,
+    commitment,
+    opportunities,
+    eligibilityIntro,
+    eligibility,
+    faqIntro,
+    faqs,
+    cta,
+  } = await getServicesContent();
 
   return (
     <SiteLayout>
@@ -57,9 +70,9 @@ export default async function ServicesPage() {
       <section className="py-16 sm:py-24">
         <div className="section-x">
           <SectionHeading
-            eyebrow="What We Offer"
-            title="Training Built Around The Selection Process"
-            body="Every programme maps to what recruitment boards actually test — ground performance, written papers and personality assessment."
+            eyebrow={servicesIntro.eyebrow}
+            title={servicesIntro.heading}
+            body={servicesIntro.body}
           />
           <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {services.map((service, i) => (
@@ -69,7 +82,9 @@ export default async function ServicesPage() {
                     <Icon name={service.icon} className="size-6" />
                   </span>
                   <h3 className="mt-5 text-lg font-semibold text-foreground">{service.title}</h3>
-                  <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{service.description}</p>
+                  <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+                    {service.description}
+                  </p>
                 </article>
               </Reveal>
             ))}
@@ -80,7 +95,13 @@ export default async function ServicesPage() {
       <section className="bg-forest py-16 text-cream sm:py-24">
         <div className="section-x grid items-center gap-12 lg:grid-cols-2">
           <Reveal>
-            <SectionHeading inverted align="left" eyebrow="Our Commitment" title={commitment.heading} body={commitment.body} />
+            <SectionHeading
+              inverted
+              align="left"
+              eyebrow={commitment.eyebrow}
+              title={commitment.heading}
+              body={commitment.body}
+            />
             <div className="mt-8 grid gap-4 sm:grid-cols-2">
               {commitment.stats.map((stat) => (
                 <div
@@ -99,9 +120,8 @@ export default async function ServicesPage() {
             </div>
           </Reveal>
           <Reveal delay={120}>
-            <Image
-              src={commitment.image.src}
-              alt={commitment.image.alt}
+            <ResponsiveImage
+              image={commitment.image}
               width={1600}
               height={1067}
               className="h-full max-h-[28rem] w-full rounded-2xl object-cover shadow-lift"
@@ -113,9 +133,8 @@ export default async function ServicesPage() {
       <section className="grain-surface py-16 sm:py-24">
         <div className="section-x grid items-center gap-12 lg:grid-cols-2">
           <Reveal>
-            <Image
-              src={opportunities.image.src}
-              alt={opportunities.image.alt}
+            <ResponsiveImage
+              image={opportunities.image}
               width={1600}
               height={1067}
               className="h-full max-h-[28rem] w-full rounded-2xl object-cover shadow-lift"
@@ -124,7 +143,7 @@ export default async function ServicesPage() {
           <Reveal delay={120}>
             <SectionHeading
               align="left"
-              eyebrow="Access For All"
+              eyebrow={opportunities.eyebrow}
               title={opportunities.heading}
               body={opportunities.body}
             />
@@ -136,7 +155,9 @@ export default async function ServicesPage() {
                   </span>
                   <span>
                     <span className="block font-semibold text-foreground">{benefit.title}</span>
-                    <span className="mt-1 block text-sm text-muted-foreground">{benefit.description}</span>
+                    <span className="mt-1 block text-sm text-muted-foreground">
+                      {benefit.description}
+                    </span>
                   </span>
                 </li>
               ))}
@@ -148,9 +169,9 @@ export default async function ServicesPage() {
       <section className="py-16 sm:py-24">
         <div className="section-x">
           <SectionHeading
-            eyebrow="Eligibility"
-            title="Recruitment Eligibility At A Glance"
-            body="Standards vary by notification. Use this as a guide and confirm current criteria with our coordinators."
+            eyebrow={eligibilityIntro.eyebrow}
+            title={eligibilityIntro.heading}
+            body={eligibilityIntro.body}
           />
           <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {eligibility.map((item, i) => (
@@ -175,7 +196,7 @@ export default async function ServicesPage() {
 
       <section className="grain-surface py-16 sm:py-24">
         <div className="section-x max-w-3xl">
-          <SectionHeading eyebrow="FAQ" title="Frequently Asked Questions" />
+          <SectionHeading eyebrow={faqIntro.eyebrow} title={faqIntro.heading} />
           <Accordion type="single" collapsible className="mt-10">
             {faqs.map((faq) => (
               <AccordionItem key={faq.id} value={faq.id}>
@@ -191,7 +212,7 @@ export default async function ServicesPage() {
         </div>
       </section>
 
-      <CTASection />
+      <CTASection heading={cta.heading} body={cta.body} />
     </SiteLayout>
   );
 }

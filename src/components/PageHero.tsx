@@ -1,6 +1,6 @@
-import Image from "next/image";
 import Link from "next/link";
 import type { ImageAsset } from "@/types";
+import { ResponsiveImage } from "@/components/ResponsiveImage";
 
 export function PageHero({
   title,
@@ -13,14 +13,7 @@ export function PageHero({
 }) {
   return (
     <section className="relative isolate flex min-h-[42vh] items-end overflow-hidden sm:min-h-[52vh]">
-      <Image
-        src={image.src}
-        alt={image.alt}
-        fill
-        priority
-        sizes="100vw"
-        className="-z-20 object-cover"
-      />
+      <ResponsiveImage image={image} fill priority sizes="100vw" className="-z-20 object-cover" />
       <div className="hero-overlay absolute inset-0 -z-10" />
       <div className="section-x pb-12 sm:pb-16">
         <nav aria-label="Breadcrumb" className="mb-4 text-sm text-cream/70">

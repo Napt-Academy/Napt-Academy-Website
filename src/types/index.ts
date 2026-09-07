@@ -1,5 +1,6 @@
 export type ImageAsset = {
   src: string;
+  mobileSrc?: string;
   alt: string;
 };
 

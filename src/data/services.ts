@@ -56,7 +56,14 @@ export const services: Service[] = [
   },
 ];
 
+export const servicesIntro = {
+  eyebrow: "What We Offer",
+  heading: "Training Built Around The Selection Process",
+  body: "Every programme maps to what recruitment boards actually test — ground performance, written papers and personality assessment.",
+};
+
 export const commitment = {
+  eyebrow: "Our Commitment",
   heading: "Building Future Guardians: NAPT Academy's Commitment",
   body: "NAPT Academy is committed to preparing students for defence, police and uniformed services with structured physical conditioning, exam-focused academics and mentorship from people who have served. Every batch is guided from the first ground session to the final selection board.",
   stats: [
@@ -70,6 +77,7 @@ export const commitment = {
 };
 
 export const opportunities = {
+  eyebrow: "Access For All",
   heading: "More Opportunities For Everyone",
   body: "At our training centre, we believe that success should be accessible to all. Whether you're aiming for a career in the Army, Police, or Other Uniformed jobs, we provide equal access to quality training. Our emphasis on discipline, structured guidance and practical preparation ensures every student can unlock their full potential and take confident steps toward a brighter future.",
   benefits: [
@@ -176,6 +184,12 @@ export const eligibility: Eligibility[] = [
   },
 ];
 
+export const eligibilityIntro = {
+  eyebrow: "Eligibility",
+  heading: "Recruitment Eligibility At A Glance",
+  body: "Standards vary by notification. Use this as a guide and confirm current criteria with our coordinators.",
+};
+
 export const faqs: FaqItem[] = [
   {
     id: "f1",
@@ -226,3 +240,13 @@ export const faqs: FaqItem[] = [
       "Visit any NAPT centre or send an enquiry through our contact page. Our coordinator will guide you through eligibility, batch timings and the admission process.",
   },
 ];
+
+export const faqIntro = {
+  eyebrow: "FAQ",
+  heading: "Frequently Asked Questions",
+};
+
+export const servicesCta = {
+  heading: "Ready to Start Your Journey Into Uniform?",
+  body: "Talk to a NAPT coordinator about batch timings, eligibility and the centre closest to you.",
+};

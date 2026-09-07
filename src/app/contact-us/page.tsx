@@ -11,6 +11,8 @@ const title = "Contact Us | NAPT Academy Admissions";
 const description =
   "Speak with a NAPT Academy coordinator about batch timings, eligibility and the training centre closest to you.";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title,
   description,
@@ -29,7 +31,7 @@ export const metadata: Metadata = {
 };
 
 export default async function ContactPage() {
-  const [{ hero, channels, form }, centers] = await Promise.all([
+  const [{ hero, channels, form, cta }, centers] = await Promise.all([
     getContactContent(),
     getTrainingCenters(),
   ]);
@@ -51,7 +53,9 @@ export default async function ContactPage() {
                   <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
                     {channel.lines.map((line) => (
                       <li key={line.value}>
-                        {line.label ? <span className="mr-1 font-medium text-foreground">{line.label}:</span> : null}
+                        {line.label ? (
+                          <span className="mr-1 font-medium text-foreground">{line.label}:</span>
+                        ) : null}
                         {line.href ? (
                           <a href={line.href} className="transition-colors hover:text-primary">
                             {line.value}
@@ -79,7 +83,7 @@ export default async function ContactPage() {
         </div>
       </section>
 
-      <CTASection heading="Prefer To Call?" body="Our admissions team is available across all Kerala centres." />
+      <CTASection heading={cta.heading} body={cta.body} />
     </SiteLayout>
   );
 }

@@ -1,15 +1,17 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { siteData } from "@/data/site";
+import { getSiteContent } from "@/lib/content";
 import { Reveal } from "./Reveal";
 
-export function CTASection({
+export async function CTASection({
   heading = "Ready to Start Your Journey Into Uniform?",
   body = "Talk to a NAPT coordinator about batch timings, eligibility and the centre closest to you.",
 }: {
   heading?: string;
   body?: string;
 }) {
+  const site = await getSiteContent();
+
   return (
     <section className="bg-olive-dark py-16 text-cream sm:py-20">
       <div className="section-x">
@@ -26,7 +28,7 @@ export function CTASection({
               variant="outline"
               className="border-cream/40 bg-transparent text-cream hover:bg-cream/10 hover:text-cream"
             >
-              <a href={`tel:${siteData.phone.replace(/\s/g, "")}`}>Call {siteData.phone}</a>
+              <a href={`tel:${site.phone.replace(/\s/g, "")}`}>Call {site.phone}</a>
             </Button>
           </div>
         </Reveal>

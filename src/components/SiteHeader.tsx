@@ -4,11 +4,11 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, Phone, X } from "lucide-react";
-import { siteData } from "@/data/site";
+import type { SiteContent } from "@/lib/content";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-export function SiteHeader({ overlay = false }: { overlay?: boolean }) {
+export function SiteHeader({ overlay = false, site }: { overlay?: boolean; site: SiteContent }) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -34,7 +34,7 @@ export function SiteHeader({ overlay = false }: { overlay?: boolean }) {
       )}
     >
       <div className="section-x flex h-18 items-center justify-between gap-4 py-3">
-        <Link href="/" className="flex items-center gap-3" aria-label={`${siteData.name} home`}>
+        <Link href="/" className="flex items-center gap-3" aria-label={`${site.name} home`}>
           <span className="flex size-10 items-center justify-center rounded-full bg-primary text-sm font-bold tracking-widest text-primary-foreground">
             N
           </span>
@@ -45,7 +45,7 @@ export function SiteHeader({ overlay = false }: { overlay?: boolean }) {
                 light ? "text-cream" : "text-foreground",
               )}
             >
-              {siteData.name}
+              {site.name}
             </span>
             <span
               className={cn(
@@ -53,13 +53,13 @@ export function SiteHeader({ overlay = false }: { overlay?: boolean }) {
                 light ? "text-cream/70" : "text-muted-foreground",
               )}
             >
-              {siteData.tagline}
+              {site.tagline}
             </span>
           </span>
         </Link>
 
         <nav aria-label="Main" className="hidden items-center gap-1 lg:flex">
-          {siteData.nav.map((item) => {
+          {site.nav.map((item) => {
             const active = pathname === item.to;
             return (
               <Link
@@ -84,9 +84,9 @@ export function SiteHeader({ overlay = false }: { overlay?: boolean }) {
 
         <div className="hidden lg:block">
           <Button asChild>
-            <a href={`tel:${siteData.phone.replace(/\s/g, "")}`}>
+            <a href={`tel:${site.phone.replace(/\s/g, "")}`}>
               <Phone className="size-4" aria-hidden />
-              {siteData.phone}
+              {site.phone}
             </a>
           </Button>
         </div>
@@ -108,7 +108,7 @@ export function SiteHeader({ overlay = false }: { overlay?: boolean }) {
       {open ? (
         <div className="border-t border-border bg-cream lg:hidden">
           <nav aria-label="Mobile" className="section-x flex flex-col py-3">
-            {siteData.nav.map((item) => (
+            {site.nav.map((item) => (
               <Link
                 key={item.to}
                 href={item.to}
@@ -122,7 +122,7 @@ export function SiteHeader({ overlay = false }: { overlay?: boolean }) {
               </Link>
             ))}
             <Button asChild className="mt-2">
-              <a href={`tel:${siteData.phone.replace(/\s/g, "")}`}>Call {siteData.phone}</a>
+              <a href={`tel:${site.phone.replace(/\s/g, "")}`}>Call {site.phone}</a>
             </Button>
           </nav>
         </div>

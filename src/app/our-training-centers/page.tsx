@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import { MapPin, MessageCircle, Phone } from "lucide-react";
 import { getTrainingCentersContent } from "@/lib/content";
 import { SiteLayout } from "@/components/SiteLayout";
@@ -8,10 +7,13 @@ import { SectionHeading } from "@/components/SectionHeading";
 import { Reveal } from "@/components/Reveal";
 import { Icon } from "@/components/Icon";
 import { CTASection } from "@/components/CTASection";
+import { ResponsiveImage } from "@/components/ResponsiveImage";
 
 const title = "Our Training Centers | NAPT Academy Across Kerala";
 const description =
   "Find your nearest NAPT Academy training centre — Kozhikode, Malappuram, Kannur, Ernakulam, Trivandrum, Wayanad and more — with contact numbers and directions.";
+
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title,
@@ -31,7 +33,8 @@ export const metadata: Metadata = {
 };
 
 export default async function CentersPage() {
-  const { hero, intro, centers, feature, opportunities } = await getTrainingCentersContent();
+  const { hero, intro, locationsIntro, centers, feature, opportunities, cta } =
+    await getTrainingCentersContent();
 
   return (
     <SiteLayout>
@@ -40,12 +43,16 @@ export default async function CentersPage() {
       <section className="py-16 sm:py-24">
         <div className="section-x grid items-center gap-12 lg:grid-cols-2">
           <Reveal>
-            <SectionHeading align="left" eyebrow="Our Network" title={intro.heading} body={intro.body} />
+            <SectionHeading
+              align="left"
+              eyebrow={intro.eyebrow}
+              title={intro.heading}
+              body={intro.body}
+            />
           </Reveal>
           <Reveal delay={120}>
-            <Image
-              src={intro.image.src}
-              alt={intro.image.alt}
+            <ResponsiveImage
+              image={intro.image}
               width={1600}
               height={1067}
               className="h-full max-h-[26rem] w-full rounded-2xl object-cover shadow-lift"
@@ -57,9 +64,9 @@ export default async function CentersPage() {
       <section className="grain-surface py-16 sm:py-24">
         <div className="section-x">
           <SectionHeading
-            eyebrow="Locations"
-            title="Centres Across Kerala"
-            body="Train at the centre closest to you — every location follows the same curriculum and fitness benchmarks."
+            eyebrow={locationsIntro.eyebrow}
+            title={locationsIntro.heading}
+            body={locationsIntro.body}
           />
           <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {centers.map((center, i) => (
@@ -109,13 +116,7 @@ export default async function CentersPage() {
       </section>
 
       <section className="relative isolate overflow-hidden py-20 text-cream sm:py-28">
-        <Image
-          src={feature.image.src}
-          alt={feature.image.alt}
-          fill
-          sizes="100vw"
-          className="-z-20 object-cover"
-        />
+        <ResponsiveImage image={feature.image} fill sizes="100vw" className="-z-20 object-cover" />
         <div className="hero-overlay absolute inset-0 -z-10" />
         <div className="section-x">
           <Reveal className="max-w-2xl">
@@ -127,7 +128,11 @@ export default async function CentersPage() {
 
       <section className="py-16 sm:py-24">
         <div className="section-x">
-          <SectionHeading eyebrow="Why NAPT" title={opportunities.heading} body={opportunities.body} />
+          <SectionHeading
+            eyebrow={opportunities.eyebrow}
+            title={opportunities.heading}
+            body={opportunities.body}
+          />
           <div className="mt-12 grid gap-6 lg:grid-cols-3">
             {opportunities.benefits.map((benefit, i) => (
               <Reveal key={benefit.id} delay={i * 80}>
@@ -136,7 +141,9 @@ export default async function CentersPage() {
                     <Icon name={benefit.icon} className="size-6" />
                   </span>
                   <h3 className="mt-5 text-lg font-semibold text-foreground">{benefit.title}</h3>
-                  <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{benefit.description}</p>
+                  <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+                    {benefit.description}
+                  </p>
                 </article>
               </Reveal>
             ))}
@@ -144,10 +151,7 @@ export default async function CentersPage() {
         </div>
       </section>
 
-      <CTASection
-        heading="Not Sure Which Centre Suits You?"
-        body="Share your location and target recruitment — we will recommend the right batch."
-      />
+      <CTASection heading={cta.heading} body={cta.body} />
     </SiteLayout>
   );
 }

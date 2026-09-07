@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import { Check } from "lucide-react";
 import { getAboutContent } from "@/lib/content";
 import { SiteLayout } from "@/components/SiteLayout";
@@ -8,10 +7,13 @@ import { SectionHeading } from "@/components/SectionHeading";
 import { Reveal } from "@/components/Reveal";
 import { Icon } from "@/components/Icon";
 import { CTASection } from "@/components/CTASection";
+import { ResponsiveImage } from "@/components/ResponsiveImage";
 
 const title = "About Us | NAPT Academy — Defence Training Institute in Wayanad";
 const description =
   "Since 2012, NAPT Academy has prepared Kerala aspirants for defence, paramilitary and police careers with retired officers, expert faculty and a discipline-first routine.";
+
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title,
@@ -31,7 +33,7 @@ export const metadata: Metadata = {
 };
 
 export default async function AboutPage() {
-  const { hero, missionVision, expertTeamIntro, credentials, teamSection, team } =
+  const { hero, missionVision, expertTeamIntro, credentials, teamSection, team, cta } =
     await getAboutContent();
 
   return (
@@ -41,16 +43,19 @@ export default async function AboutPage() {
       <section className="py-16 sm:py-24">
         <div className="section-x grid items-center gap-12 lg:grid-cols-2">
           <Reveal>
-            <Image
-              src={missionVision.image.src}
-              alt={missionVision.image.alt}
+            <ResponsiveImage
+              image={missionVision.image}
               width={1600}
               height={1067}
               className="h-full max-h-[30rem] w-full rounded-2xl object-cover shadow-lift"
             />
           </Reveal>
           <Reveal delay={120}>
-            <SectionHeading align="left" eyebrow="Since 2012" title={missionVision.heading} />
+            <SectionHeading
+              align="left"
+              eyebrow={missionVision.eyebrow}
+              title={missionVision.heading}
+            />
             <div className="mt-5 space-y-4 text-muted-foreground">
               {missionVision.paragraphs.map((p) => (
                 <p key={p.slice(0, 24)} className="leading-relaxed">
@@ -65,7 +70,11 @@ export default async function AboutPage() {
       <section className="grain-surface py-16 sm:py-24">
         <div className="section-x grid items-center gap-12 lg:grid-cols-2">
           <Reveal>
-            <SectionHeading align="left" eyebrow="Expertise" title={expertTeamIntro.heading} />
+            <SectionHeading
+              align="left"
+              eyebrow={expertTeamIntro.eyebrow}
+              title={expertTeamIntro.heading}
+            />
             <div className="mt-5 space-y-4 text-muted-foreground">
               {expertTeamIntro.paragraphs.map((p) => (
                 <p key={p.slice(0, 24)} className="leading-relaxed">
@@ -85,9 +94,8 @@ export default async function AboutPage() {
             </ul>
           </Reveal>
           <Reveal delay={120}>
-            <Image
-              src={expertTeamIntro.image.src}
-              alt={expertTeamIntro.image.alt}
+            <ResponsiveImage
+              image={expertTeamIntro.image}
               width={1600}
               height={1067}
               className="h-full max-h-[30rem] w-full rounded-2xl object-cover shadow-lift"
@@ -98,7 +106,12 @@ export default async function AboutPage() {
 
       <section className="bg-forest py-16 text-cream sm:py-24">
         <div className="section-x">
-          <SectionHeading inverted eyebrow="Credentials" title={credentials.heading} body={credentials.body} />
+          <SectionHeading
+            inverted
+            eyebrow={credentials.eyebrow}
+            title={credentials.heading}
+            body={credentials.body}
+          />
           <div className="mt-12 grid gap-6 sm:grid-cols-2">
             {credentials.items.map((item, i) => (
               <Reveal key={item.id} delay={i * 80}>
@@ -117,14 +130,17 @@ export default async function AboutPage() {
 
       <section className="py-16 sm:py-24">
         <div className="section-x">
-          <SectionHeading eyebrow="Our Team" title={teamSection.heading} body={teamSection.body} />
+          <SectionHeading
+            eyebrow={teamSection.eyebrow}
+            title={teamSection.heading}
+            body={teamSection.body}
+          />
           <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {team.map((member, i) => (
               <Reveal key={member.id} delay={i * 60}>
                 <article className="overflow-hidden rounded-2xl border border-border bg-card shadow-card">
-                  <Image
-                    src={member.image.src}
-                    alt={member.image.alt}
+                  <ResponsiveImage
+                    image={member.image}
                     width={640}
                     height={800}
                     className="h-60 w-full object-cover"
@@ -140,7 +156,7 @@ export default async function AboutPage() {
         </div>
       </section>
 
-      <CTASection />
+      <CTASection heading={cta.heading} body={cta.body} />
     </SiteLayout>
   );
 }

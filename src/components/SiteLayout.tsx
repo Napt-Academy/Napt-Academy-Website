@@ -2,14 +2,17 @@ import type { ReactNode } from "react";
 import { SiteHeader } from "./SiteHeader";
 import { SiteFooter } from "./SiteFooter";
 import { FloatingContact } from "./FloatingContact";
+import { getSiteContent } from "@/lib/content";
 
-export function SiteLayout({
+export async function SiteLayout({
   children,
   overlayHeader = false,
 }: {
   children: ReactNode;
   overlayHeader?: boolean;
 }) {
+  const site = await getSiteContent();
+
   return (
     <div className="flex min-h-screen flex-col">
       <a
@@ -18,12 +21,12 @@ export function SiteLayout({
       >
         Skip to content
       </a>
-      <SiteHeader overlay={overlayHeader} />
+      <SiteHeader overlay={overlayHeader} site={site} />
       <main id="main" className="flex-1">
         {children}
       </main>
-      <SiteFooter />
-      <FloatingContact />
+      <SiteFooter site={site} />
+      <FloatingContact site={site} />
     </div>
   );
 }
