@@ -85,7 +85,7 @@ const police: ForceCard[] = [
 ];
 
 export const serviceCategories: ServiceCategory[] = [
-  { id: "armed-forces", title: "Indian Armed Forces", items: armedForces },
+  { id: "armed-forces", title: "Indian Armed Forces", items: armedForces, carousel: true },
   { id: "paramilitary", title: "Paramilitary Forces", items: paramilitary, carousel: true },
   { id: "police", title: "Police Forces (Physical Training)", items: police, carousel: true },
 ];

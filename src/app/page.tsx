@@ -132,8 +132,8 @@ export default async function HomePage() {
             <div key={category.id}>
               <h3 className="mb-6 text-2xl font-semibold text-foreground">{category.title}</h3>
 
-              {category.carousel ? (
-                <Carousel opts={{ align: "start" }} className="w-full">
+              {category.carousel || category.id === "armed-forces" ? (
+                <Carousel opts={{ align: "start" }} className="w-full pb-12 sm:pb-0">
                   <CarouselContent>
                     {category.items.map((item) => (
                       <CarouselItem key={item.id} className="sm:basis-1/2 lg:basis-1/3">
@@ -141,8 +141,8 @@ export default async function HomePage() {
                       </CarouselItem>
                     ))}
                   </CarouselContent>
-                  <CarouselPrevious className="hidden sm:flex" />
-                  <CarouselNext className="hidden sm:flex" />
+                  <CarouselPrevious className="bottom-0 left-auto right-10 top-auto translate-y-0 sm:-left-12 sm:bottom-auto sm:right-auto sm:top-1/2 sm:-translate-y-1/2" />
+                  <CarouselNext className="bottom-0 right-0 top-auto translate-y-0 sm:-right-12 sm:bottom-auto sm:top-1/2 sm:-translate-y-1/2" />
                 </Carousel>
               ) : (
                 <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
