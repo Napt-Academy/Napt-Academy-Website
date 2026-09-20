@@ -1,4 +1,4 @@
-import { desc, eq } from "drizzle-orm";
+import { and, count, desc, eq, gte, ilike, inArray, lte, type SQL } from "drizzle-orm";
 import { getDb, hasDatabaseUrl } from "@/lib/db";
 import { contactEnquiries, contentDocuments, mediaAssets, type ContentKey } from "@/lib/db/schema";
 
@@ -64,6 +64,24 @@ export async function deleteMediaById(id: string) {
   return row;
 }
 
+export type EnquiryListOptions = {
+  q?: string;
+  from?: Date;
+  to?: Date;
+  limit?: number;
+  offset?: number;
+};
+
+function enquiryWhere(options?: Pick<EnquiryListOptions, "q" | "from" | "to">): SQL | undefined {
+  const conditions = [];
+  const q = options?.q?.trim();
+  if (q) conditions.push(ilike(contactEnquiries.name, `%${q}%`));
+  if (options?.from) conditions.push(gte(contactEnquiries.createdAt, options.from));
+  if (options?.to) conditions.push(lte(contactEnquiries.createdAt, options.to));
+  if (conditions.length === 0) return undefined;
+  return conditions.length === 1 ? conditions[0] : and(...conditions);
+}
+
 export async function insertEnquiry(input: {
   name: string;
   centerId: string;
@@ -77,10 +95,15 @@ export async function insertEnquiry(input: {
   return row;
 }
 
-export async function listEnquiries() {
+export async function listEnquiries(options?: EnquiryListOptions) {
   if (!hasDatabaseUrl()) return [];
   const db = getDb();
-  return db.select().from(contactEnquiries).orderBy(desc(contactEnquiries.createdAt));
+  const where = enquiryWhere(options);
+  const query = db.select().from(contactEnquiries).where(where).orderBy(desc(contactEnquiries.createdAt));
+  if (typeof options?.limit === "number") {
+    return query.limit(options.limit).offset(options.offset ?? 0);
+  }
+  return query;
 }
 
 export async function deleteEnquiry(id: string) {
@@ -88,9 +111,16 @@ export async function deleteEnquiry(id: string) {
   await db.delete(contactEnquiries).where(eq(contactEnquiries.id, id));
 }
 
-export async function countEnquiries() {
+export async function deleteEnquiries(ids: string[]) {
+  if (ids.length === 0) return;
+  const db = getDb();
+  await db.delete(contactEnquiries).where(inArray(contactEnquiries.id, ids));
+}
+
+export async function countEnquiries(options?: Pick<EnquiryListOptions, "q" | "from" | "to">) {
   if (!hasDatabaseUrl()) return 0;
   const db = getDb();
-  const rows = await db.select({ id: contactEnquiries.id }).from(contactEnquiries);
-  return rows.length;
+  const where = enquiryWhere(options);
+  const rows = await db.select({ value: count() }).from(contactEnquiries).where(where);
+  return Number(rows[0]?.value ?? 0);
 }

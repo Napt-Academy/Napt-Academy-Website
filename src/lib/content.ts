@@ -87,6 +87,33 @@ export type SiteContent = {
   };
   nav: { label: string; to: string }[];
   credit: string;
+  footerBrand: {
+    name: string;
+    description: string;
+    social: {
+      facebook: string;
+      whatsapp: string;
+      instagram: string;
+    };
+  };
+  footerQuickLinks: {
+    heading: string;
+    links: { label: string; to: string }[];
+  };
+  footerReachUs: {
+    heading: string;
+    phone: string;
+    supportPhone: string;
+    email: string;
+    address: string;
+  };
+  footerHeadOffice: {
+    heading: string;
+    body: string;
+  };
+  footerLegal: {
+    credit: string;
+  };
 };
 
 export const getSiteContent = () =>
@@ -102,6 +129,18 @@ export const getSiteContent = () =>
     social: { ...siteData.social },
     nav: siteData.nav.map((item) => ({ ...item })),
     credit: siteData.credit,
+    footerBrand: {
+      name: siteData.footerBrand.name,
+      description: siteData.footerBrand.description,
+      social: { ...siteData.footerBrand.social },
+    },
+    footerQuickLinks: {
+      heading: siteData.footerQuickLinks.heading,
+      links: siteData.footerQuickLinks.links.map((item) => ({ ...item })),
+    },
+    footerReachUs: { ...siteData.footerReachUs },
+    footerHeadOffice: { ...siteData.footerHeadOffice },
+    footerLegal: { ...siteData.footerLegal },
   });
 
 export const getHomeContent = () =>
@@ -181,6 +220,18 @@ export function localFallbacks() {
       social: { ...siteData.social },
       nav: siteData.nav.map((item) => ({ ...item })),
       credit: siteData.credit,
+      footerBrand: {
+        name: siteData.footerBrand.name,
+        description: siteData.footerBrand.description,
+        social: { ...siteData.footerBrand.social },
+      },
+      footerQuickLinks: {
+        heading: siteData.footerQuickLinks.heading,
+        links: siteData.footerQuickLinks.links.map((item) => ({ ...item })),
+      },
+      footerReachUs: { ...siteData.footerReachUs },
+      footerHeadOffice: { ...siteData.footerHeadOffice },
+      footerLegal: { ...siteData.footerLegal },
     },
     home: {
       hero: homeData.heroContent,

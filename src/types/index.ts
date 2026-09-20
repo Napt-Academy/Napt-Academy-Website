@@ -73,6 +73,8 @@ export type TrainingCenter = {
   address: string;
   phone: string;
   whatsapp?: string;
+  facebook?: string;
+  instagram?: string;
   mapUrl?: string;
 };
 

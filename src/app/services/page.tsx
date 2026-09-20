@@ -180,8 +180,8 @@ export default async function ServicesPage() {
                   <p className="eyebrow text-primary">{item.category}</p>
                   <h3 className="mt-2 text-lg font-semibold text-foreground">{item.title}</h3>
                   <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
-                    {item.requirements.map((req) => (
-                      <li key={req} className="flex gap-2">
+                    {item.requirements.map((req, reqIndex) => (
+                      <li key={`${item.id}-${reqIndex}`} className="flex gap-2">
                         <span className="mt-2 size-1.5 shrink-0 rounded-full bg-gold" />
                         {req}
                       </li>
