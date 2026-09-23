@@ -48,10 +48,12 @@ export default async function AdminEnquiriesPage({
   const to = params.to?.trim() ?? "";
   const requestedPage = Math.max(1, Number(params.page) || 1);
 
+  const fromDate = from ? startOfDay(from) : undefined;
+  const toDate = to ? endOfDay(to) : undefined;
   const filters = {
     q,
-    from: from ? startOfDay(from) : undefined,
-    to: to ? endOfDay(to) : undefined,
+    ...(fromDate ? { from: fromDate } : {}),
+    ...(toDate ? { to: toDate } : {}),
   };
 
   const dbReady = hasDatabaseUrl();
