@@ -32,14 +32,22 @@ export async function upsertDocument(key: ContentKey, data: unknown) {
 
 export async function listDocuments() {
   if (!hasDatabaseUrl()) return [];
-  const db = getDb();
-  return db.select().from(contentDocuments).orderBy(contentDocuments.key);
+  try {
+    const db = getDb();
+    return await db.select().from(contentDocuments).orderBy(contentDocuments.key);
+  } catch {
+    return [];
+  }
 }
 
 export async function listMedia() {
   if (!hasDatabaseUrl()) return [];
-  const db = getDb();
-  return db.select().from(mediaAssets).orderBy(desc(mediaAssets.createdAt));
+  try {
+    const db = getDb();
+    return await db.select().from(mediaAssets).orderBy(desc(mediaAssets.createdAt));
+  } catch {
+    return [];
+  }
 }
 
 export async function insertMedia(input: { url: string; alt?: string; pathname?: string }) {
@@ -97,13 +105,17 @@ export async function insertEnquiry(input: {
 
 export async function listEnquiries(options?: EnquiryListOptions) {
   if (!hasDatabaseUrl()) return [];
-  const db = getDb();
-  const where = enquiryWhere(options);
-  const query = db.select().from(contactEnquiries).where(where).orderBy(desc(contactEnquiries.createdAt));
-  if (typeof options?.limit === "number") {
-    return query.limit(options.limit).offset(options.offset ?? 0);
+  try {
+    const db = getDb();
+    const where = enquiryWhere(options);
+    const query = db.select().from(contactEnquiries).where(where).orderBy(desc(contactEnquiries.createdAt));
+    if (typeof options?.limit === "number") {
+      return await query.limit(options.limit).offset(options.offset ?? 0);
+    }
+    return await query;
+  } catch {
+    return [];
   }
-  return query;
 }
 
 export async function deleteEnquiry(id: string) {
@@ -119,8 +131,12 @@ export async function deleteEnquiries(ids: string[]) {
 
 export async function countEnquiries(options?: Pick<EnquiryListOptions, "q" | "from" | "to">) {
   if (!hasDatabaseUrl()) return 0;
-  const db = getDb();
-  const where = enquiryWhere(options);
-  const rows = await db.select({ value: count() }).from(contactEnquiries).where(where);
-  return Number(rows[0]?.value ?? 0);
+  try {
+    const db = getDb();
+    const where = enquiryWhere(options);
+    const rows = await db.select({ value: count() }).from(contactEnquiries).where(where);
+    return Number(rows[0]?.value ?? 0);
+  } catch {
+    return 0;
+  }
 }

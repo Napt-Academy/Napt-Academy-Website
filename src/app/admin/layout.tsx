@@ -3,6 +3,8 @@ import { Suspense } from "react";
 import { AdminShell } from "@/components/admin/AdminShell";
 import { getAdminSession, isAdminAuthenticated } from "@/lib/auth";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Admin | NAPT Academy",
   robots: { index: false, follow: false },

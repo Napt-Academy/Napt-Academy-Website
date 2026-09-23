@@ -22,7 +22,7 @@ export default async function AdminSectionPage({
   const fallbackDocument = localFallbacks()[page.docKey] as Record<string, unknown>;
   const document = await getDocumentData<Record<string, unknown>>(page.docKey);
   const initialData = mergeContentData(fallbackDocument[section.key], document?.[section.key]);
-  if (typeof initialData === "undefined") notFound();
+  if (initialData == null) notFound();
 
   return (
     <div

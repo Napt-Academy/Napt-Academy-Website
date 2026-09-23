@@ -30,25 +30,25 @@ type SiteFormState = {
   credit: string;
 };
 
-function toFormState(data: SiteContent): SiteFormState {
+function toFormState(data: SiteContent | null | undefined): SiteFormState {
   return {
-    name: data.name ?? "",
-    tagline: data.tagline ?? "",
-    description: data.description ?? "",
-    phone: data.phone ?? "",
-    supportPhone: data.supportPhone ?? "",
-    email: data.email ?? "",
-    headOffice: data.headOffice ?? "",
-    address: data.address ?? "",
+    name: data?.name ?? "",
+    tagline: data?.tagline ?? "",
+    description: data?.description ?? "",
+    phone: data?.phone ?? "",
+    supportPhone: data?.supportPhone ?? "",
+    email: data?.email ?? "",
+    headOffice: data?.headOffice ?? "",
+    address: data?.address ?? "",
     social: {
-      facebook: data.social?.facebook ?? "",
-      whatsapp: data.social?.whatsapp ?? "",
-      instagram: data.social?.instagram ?? "",
+      facebook: data?.social?.facebook ?? "",
+      whatsapp: data?.social?.whatsapp ?? "",
+      instagram: data?.social?.instagram ?? "",
     },
-    nav: Array.isArray(data.nav)
-      ? data.nav.map((item) => ({ label: item.label ?? "", to: item.to ?? "" }))
+    nav: Array.isArray(data?.nav)
+      ? data.nav.map((item) => ({ label: item?.label ?? "", to: item?.to ?? "" }))
       : [],
-    credit: data.credit ?? "",
+    credit: data?.credit ?? "",
   };
 }
 
@@ -82,7 +82,13 @@ function TextField({
   );
 }
 
-export function SiteSettingsEditor({ initialData }: { initialData: SiteContent }) {
+export function SiteSettingsEditor({
+  initialData,
+  fallback,
+}: {
+  initialData: SiteContent | null | undefined;
+  fallback: SiteContent;
+}) {
   const [form, setForm] = useState(() => toFormState(initialData));
   const [dirty, setDirty] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -150,11 +156,11 @@ export function SiteSettingsEditor({ initialData }: { initialData: SiteContent }
           .map((item) => ({ label: item.label.trim(), to: item.to.trim() }))
           .filter((item) => item.label && item.to),
         credit: form.credit.trim(),
-        footerBrand: initialData.footerBrand,
-        footerQuickLinks: initialData.footerQuickLinks,
-        footerReachUs: initialData.footerReachUs,
-        footerHeadOffice: initialData.footerHeadOffice,
-        footerLegal: initialData.footerLegal,
+        footerBrand: initialData?.footerBrand ?? fallback.footerBrand,
+        footerQuickLinks: initialData?.footerQuickLinks ?? fallback.footerQuickLinks,
+        footerReachUs: initialData?.footerReachUs ?? fallback.footerReachUs,
+        footerHeadOffice: initialData?.footerHeadOffice ?? fallback.footerHeadOffice,
+        footerLegal: initialData?.footerLegal ?? fallback.footerLegal,
       };
 
       const result = await saveDocumentAction("site", JSON.stringify(next));
