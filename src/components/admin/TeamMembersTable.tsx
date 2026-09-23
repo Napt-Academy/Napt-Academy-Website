@@ -62,26 +62,36 @@ const emptyForm: MemberForm = {
   whatsapp: "",
 };
 
+function optionalText(value: unknown) {
+  const text = typeof value === "string" ? value.trim() : "";
+  return text || undefined;
+}
+
 function asMembers(value: unknown): TeamMember[] {
   if (!Array.isArray(value)) return [];
   return value.map((item) => {
     const row = item && typeof item === "object" ? (item as Record<string, unknown>) : {};
+    const imageValue = row["image"];
     const image =
-      row.image && typeof row.image === "object" ? (row.image as Record<string, unknown>) : {};
+      imageValue && typeof imageValue === "object"
+        ? (imageValue as Record<string, unknown>)
+        : {};
+    const mobileSrc = image["mobileSrc"];
+    const facebook = optionalText(row["facebook"]);
+    const instagram = optionalText(row["instagram"]);
+    const whatsapp = optionalText(row["whatsapp"]);
     return {
-      id: String(row.id ?? ""),
-      name: String(row.name ?? ""),
-      designation: String(row.designation ?? ""),
+      id: String(row["id"] ?? ""),
+      name: String(row["name"] ?? ""),
+      designation: String(row["designation"] ?? ""),
       image: {
-        src: String(image.src ?? ""),
-        alt: String(image.alt ?? ""),
-        ...(typeof image.mobileSrc === "string" && image.mobileSrc
-          ? { mobileSrc: image.mobileSrc }
-          : {}),
+        src: String(image["src"] ?? ""),
+        alt: String(image["alt"] ?? ""),
+        ...(typeof mobileSrc === "string" && mobileSrc ? { mobileSrc } : {}),
       },
-      facebook: String(row.facebook ?? ""),
-      instagram: String(row.instagram ?? ""),
-      whatsapp: String(row.whatsapp ?? ""),
+      ...(facebook ? { facebook } : {}),
+      ...(instagram ? { instagram } : {}),
+      ...(whatsapp ? { whatsapp } : {}),
     };
   });
 }
@@ -192,6 +202,9 @@ export function TeamMembersTable({
     }
 
     const existing = editing !== "new" && editing ? editing : null;
+    const facebook = form.facebook.trim();
+    const instagram = form.instagram.trim();
+    const whatsapp = form.whatsapp.trim();
     const nextMember: TeamMember = {
       id: existing?.id ?? newMemberId(name),
       name,
@@ -201,9 +214,9 @@ export function TeamMembersTable({
         alt: form.imageAlt.trim() || name,
         ...(existing?.image.mobileSrc ? { mobileSrc: existing.image.mobileSrc } : {}),
       },
-      facebook: form.facebook.trim() || undefined,
-      instagram: form.instagram.trim() || undefined,
-      whatsapp: form.whatsapp.trim() || undefined,
+      ...(facebook ? { facebook } : {}),
+      ...(instagram ? { instagram } : {}),
+      ...(whatsapp ? { whatsapp } : {}),
     };
 
     const next = existing
