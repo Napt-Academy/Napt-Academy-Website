@@ -31,9 +31,9 @@ function normalizeContent<T>(content: T): T {
 }
 
 export function mergeContentData<T>(fallback: T, incoming: unknown): T {
+  if (incoming == null) return fallback;
   if (
     fallback &&
-    incoming &&
     typeof fallback === "object" &&
     typeof incoming === "object" &&
     !Array.isArray(fallback) &&
@@ -48,7 +48,7 @@ export function mergeContentData<T>(fallback: T, incoming: unknown): T {
       ]),
     ) as T;
   }
-  return (typeof incoming === "undefined" ? fallback : incoming) as T;
+  return incoming as T;
 }
 
 async function loadContent<T>(key: ContentKey, fallback: T): Promise<T> {

@@ -7,5 +7,5 @@ export default async function Page() {
   const fromDb = await getDocumentData<SiteContent>("site");
   const initialData = mergeContentData(fallback, fromDb);
 
-  return <SiteSettingsEditor initialData={initialData} />;
+  return <SiteSettingsEditor initialData={initialData} fallback={fallback} />;
 }

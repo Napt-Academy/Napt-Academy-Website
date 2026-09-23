@@ -89,8 +89,8 @@ export function ContactForm({
             render={({ field }) => (
               <Select
                 key={centerSelectKey}
-                value={field.value || undefined}
                 onValueChange={field.onChange}
+                {...(field.value ? { value: field.value } : {})}
               >
                 <SelectTrigger id="center" aria-invalid={!!errors.center}>
                   <SelectValue placeholder="Select a training centre" />

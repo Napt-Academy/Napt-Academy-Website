@@ -18,7 +18,7 @@ export default async function AdminFooterSectionPage({
   const fallbackDocument = localFallbacks()[ADMIN_FOOTER.docKey] as Record<string, unknown>;
   const document = await getDocumentData<Record<string, unknown>>(ADMIN_FOOTER.docKey);
   const initialData = mergeContentData(fallbackDocument[section.key], document?.[section.key]);
-  if (typeof initialData === "undefined") notFound();
+  if (initialData == null) notFound();
 
   return (
     <div className="mx-auto max-w-4xl space-y-6">
