@@ -61,19 +61,28 @@ const emptyForm: CenterForm = {
   mapUrl: "",
 };
 
+function optionalText(value: unknown) {
+  const text = typeof value === "string" ? value.trim() : "";
+  return text || undefined;
+}
+
 function asCenters(value: unknown): TrainingCenter[] {
   if (!Array.isArray(value)) return [];
   return value.map((item) => {
     const row = item && typeof item === "object" ? (item as Record<string, unknown>) : {};
+    const whatsapp = optionalText(row["whatsapp"]);
+    const facebook = optionalText(row["facebook"]);
+    const instagram = optionalText(row["instagram"]);
+    const mapUrl = optionalText(row["mapUrl"]);
     return {
-      id: String(row.id ?? ""),
-      name: String(row.name ?? ""),
-      address: String(row.address ?? ""),
-      phone: String(row.phone ?? ""),
-      whatsapp: String(row.whatsapp ?? ""),
-      facebook: String(row.facebook ?? ""),
-      instagram: String(row.instagram ?? ""),
-      mapUrl: String(row.mapUrl ?? ""),
+      id: String(row["id"] ?? ""),
+      name: String(row["name"] ?? ""),
+      address: String(row["address"] ?? ""),
+      phone: String(row["phone"] ?? ""),
+      ...(whatsapp ? { whatsapp } : {}),
+      ...(facebook ? { facebook } : {}),
+      ...(instagram ? { instagram } : {}),
+      ...(mapUrl ? { mapUrl } : {}),
     };
   });
 }
@@ -165,15 +174,19 @@ export function CentersTable({
       return;
     }
 
+    const whatsapp = form.whatsapp.trim();
+    const facebook = form.facebook.trim();
+    const instagram = form.instagram.trim();
+    const mapUrl = form.mapUrl.trim();
     const nextCenter: TrainingCenter = {
       id: editing === "new" || !editing ? newCenterId(name) : editing.id,
       name,
       address,
       phone,
-      whatsapp: form.whatsapp.trim() || undefined,
-      facebook: form.facebook.trim() || undefined,
-      instagram: form.instagram.trim() || undefined,
-      mapUrl: form.mapUrl.trim() || undefined,
+      ...(whatsapp ? { whatsapp } : {}),
+      ...(facebook ? { facebook } : {}),
+      ...(instagram ? { instagram } : {}),
+      ...(mapUrl ? { mapUrl } : {}),
     };
 
     const next =
