@@ -132,7 +132,14 @@ export default async function ServicesPage() {
 
       <section className="grain-surface py-16 sm:py-24">
         <div className="section-x grid items-center gap-12 lg:grid-cols-2">
-          <Reveal>
+          <Reveal className="order-1 lg:col-start-2 lg:row-start-1">
+            <SectionHeading
+              align="left"
+              eyebrow={opportunities.eyebrow}
+              title={opportunities.heading}
+            />
+          </Reveal>
+          <Reveal className="order-2 lg:order-none lg:col-start-1 lg:row-start-1 lg:row-span-3">
             <ResponsiveImage
               image={opportunities.image}
               width={1600}
@@ -140,13 +147,12 @@ export default async function ServicesPage() {
               className="h-full max-h-[28rem] w-full rounded-2xl object-cover shadow-lift"
             />
           </Reveal>
-          <Reveal delay={120}>
-            <SectionHeading
-              align="left"
-              eyebrow={opportunities.eyebrow}
-              title={opportunities.heading}
-              body={opportunities.body}
-            />
+          <Reveal delay={80} className="order-3 lg:col-start-2">
+            <p className="mt-5 text-base leading-relaxed text-muted-foreground">
+              {opportunities.body}
+            </p>
+          </Reveal>
+          <Reveal delay={120} className="order-4 lg:col-start-2">
             <ul className="mt-8 space-y-4">
               {opportunities.benefits.map((benefit) => (
                 <li key={benefit.id} className="flex gap-4 rounded-2xl bg-card p-5 shadow-card">
@@ -180,8 +186,8 @@ export default async function ServicesPage() {
                   <p className="eyebrow text-primary">{item.category}</p>
                   <h3 className="mt-2 text-lg font-semibold text-foreground">{item.title}</h3>
                   <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
-                    {item.requirements.map((req) => (
-                      <li key={req} className="flex gap-2">
+                    {item.requirements.map((req, reqIndex) => (
+                      <li key={`${item.id}-${reqIndex}`} className="flex gap-2">
                         <span className="mt-2 size-1.5 shrink-0 rounded-full bg-gold" />
                         {req}
                       </li>

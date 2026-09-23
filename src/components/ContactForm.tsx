@@ -27,6 +27,7 @@ export function ContactForm({
 }) {
   const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
   const [serverMessage, setServerMessage] = useState("");
+  const [centerSelectKey, setCenterSelectKey] = useState(0);
 
   const {
     register,
@@ -57,6 +58,7 @@ export function ContactForm({
       setStatus("success");
       setServerMessage("Thank you. A coordinator will contact you with batch details.");
       reset();
+      setCenterSelectKey((key) => key + 1);
     } catch {
       setStatus("error");
       setServerMessage("Unable to send your enquiry. Please try again or call us.");
@@ -85,7 +87,11 @@ export function ContactForm({
             name="center"
             control={control}
             render={({ field }) => (
-              <Select onValueChange={field.onChange} {...(field.value ? { value: field.value } : {})}>
+              <Select
+                key={centerSelectKey}
+                value={field.value || undefined}
+                onValueChange={field.onChange}
+              >
                 <SelectTrigger id="center" aria-invalid={!!errors.center}>
                   <SelectValue placeholder="Select a training centre" />
                 </SelectTrigger>

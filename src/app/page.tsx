@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Star } from "lucide-react";
+import { ChevronLeft, ChevronRight, Star } from "lucide-react";
 import { getHomeContent, getSiteContent } from "@/lib/content";
 import { SiteLayout } from "@/components/SiteLayout";
 import { SectionHeading } from "@/components/SectionHeading";
@@ -254,27 +254,35 @@ export default async function HomePage() {
             title={testimonialsIntro.heading}
             body={testimonialsIntro.body}
           />
-          <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {testimonials.map((t, i) => (
-              <Reveal key={t.id} delay={i * 70}>
-                <article className="h-full rounded-2xl border border-border bg-card p-7 shadow-card">
-                  <div className="flex gap-1" aria-label={`${t.rating} out of 5 stars`}>
-                    {Array.from({ length: 5 }).map((_, idx) => (
-                      <Star
-                        key={idx}
-                        aria-hidden
-                        className={
-                          idx < t.rating ? "size-4 fill-gold text-gold" : "size-4 text-border"
-                        }
-                      />
-                    ))}
-                  </div>
-                  <p className="mt-4 text-sm leading-relaxed text-muted-foreground">{t.content}</p>
-                  <p className="mt-5 font-semibold text-foreground">{t.name}</p>
-                </article>
-              </Reveal>
-            ))}
-          </div>
+          <Carousel opts={{ align: "start" }} className="mt-12 w-full pb-16">
+            <CarouselContent>
+              {testimonials.map((t) => (
+                <CarouselItem key={t.id} className="sm:basis-1/2 lg:basis-1/3">
+                  <article className="h-full rounded-2xl border border-border bg-card p-7 shadow-card">
+                    <div className="flex gap-1" aria-label={`${t.rating} out of 5 stars`}>
+                      {Array.from({ length: 5 }).map((_, idx) => (
+                        <Star
+                          key={idx}
+                          aria-hidden
+                          className={
+                            idx < t.rating ? "size-4 fill-gold text-gold" : "size-4 text-border"
+                          }
+                        />
+                      ))}
+                    </div>
+                    <p className="mt-4 text-sm leading-relaxed text-muted-foreground">{t.content}</p>
+                    <p className="mt-5 font-semibold text-foreground">{t.name}</p>
+                  </article>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <CarouselPrevious className="size-11 left-auto right-14 top-auto -bottom-14 translate-y-0 border-foreground bg-transparent shadow-none hover:bg-transparent hover:text-foreground disabled:border-foreground/20 disabled:text-foreground/20 disabled:opacity-100">
+              <ChevronLeft className="size-5" />
+            </CarouselPrevious>
+            <CarouselNext className="size-11 left-auto right-0 top-auto -bottom-14 translate-y-0 border-foreground bg-transparent shadow-none hover:bg-transparent hover:text-foreground disabled:border-foreground/20 disabled:text-foreground/20 disabled:opacity-100">
+              <ChevronRight className="size-5" />
+            </CarouselNext>
+          </Carousel>
         </div>
       </section>
 
@@ -293,17 +301,18 @@ function ForceTile({
   image: ImageAsset;
 }) {
   return (
-    <article className="group relative h-72 overflow-hidden rounded-2xl shadow-card">
-      <ResponsiveImage
-        image={image}
-        fill
-        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-        className="object-cover transition-transform duration-700 group-hover:scale-105"
-      />
-      <div className="hero-overlay absolute inset-0" />
-      <div className="absolute inset-x-0 bottom-0 p-6">
-        <h4 className="text-lg font-semibold text-cream">{title}</h4>
-        {subtitle ? <p className="mt-1 text-sm text-cream/75">{subtitle}</p> : null}
+    <article className="group flex h-full flex-col rounded-2xl border border-border bg-card p-5 shadow-card transition-shadow duration-300 hover:shadow-lift">
+      <div className="relative h-44 w-full overflow-hidden">
+        <ResponsiveImage
+          image={image}
+          fill
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+          className="absolute inset-0 h-full w-full object-contain object-center"
+        />
+      </div>
+      <div className="mt-4 text-center">
+        <h4 className="text-lg font-semibold text-foreground">{title}</h4>
+        {subtitle ? <p className="mt-1 text-sm text-muted-foreground">{subtitle}</p> : null}
       </div>
     </article>
   );

@@ -9,9 +9,15 @@ import {
   validateAdminCredentials,
 } from "@/lib/auth";
 import { deleteBlobUrl } from "@/lib/blob";
-import { deleteEnquiry, deleteMediaById, getDocumentData, upsertDocument } from "@/lib/db/queries";
+import {
+  deleteEnquiries,
+  deleteEnquiry,
+  deleteMediaById,
+  getDocumentData,
+  upsertDocument,
+} from "@/lib/db/queries";
 import { CONTENT_KEYS, type ContentKey } from "@/lib/db/schema";
-import { getAdminPage, getAdminSection } from "@/lib/admin-pages";
+import { getAdminPage, getAdminSection, adminEditorPath } from "@/lib/admin-pages";
 import { localFallbacks } from "@/lib/content";
 
 function requireAdmin() {
@@ -36,6 +42,7 @@ function revalidatePublic() {
   revalidatePath("/admin/media");
   revalidatePath("/admin/enquiries");
   revalidatePath("/admin/pages");
+  revalidatePath("/admin/footer");
 }
 
 export async function loginAction(formData: FormData) {
@@ -108,8 +115,8 @@ export async function saveSectionAction(pageSlug: string, sectionSlug: string, d
   }
 
   revalidatePublic();
-  revalidatePath(`/admin/pages/${page.slug}`);
-  revalidatePath(`/admin/pages/${page.slug}/${section.slug}`);
+  revalidatePath(adminEditorPath(page));
+  revalidatePath(adminEditorPath(page, section.slug));
   return { ok: true };
 }
 
@@ -127,6 +134,18 @@ export async function deleteEnquiryAction(formData: FormData) {
   const id = String(formData.get("id") ?? "");
   if (!id) return;
   await deleteEnquiry(id);
+  revalidatePath("/admin/enquiries");
+  revalidatePath("/admin");
+}
+
+export async function deleteEnquiriesAction(formData: FormData) {
+  await requireAdmin();
+  const ids = formData
+    .getAll("ids")
+    .map((value) => String(value).trim())
+    .filter(Boolean);
+  if (ids.length === 0) return;
+  await deleteEnquiries(ids);
   revalidatePath("/admin/enquiries");
   revalidatePath("/admin");
 }

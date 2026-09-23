@@ -10,11 +10,13 @@ import {
   Inbox,
   LayoutDashboard,
   LogOut,
+  PanelBottom,
   Settings,
 } from "lucide-react";
 import { logoutAction } from "@/app/admin/actions";
-import { ADMIN_PAGES } from "@/lib/admin-pages";
+import { ADMIN_FOOTER, ADMIN_PAGES } from "@/lib/admin-pages";
 import { cn } from "@/lib/utils";
+import { Toaster } from "@/components/ui/sonner";
 
 const primaryNav = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
@@ -105,6 +107,54 @@ export function AdminShell({
                 })}
               </div>
             </details>
+            <details className="group" open={pathname.startsWith("/admin/footer")}>
+              <summary
+                className={cn(
+                  "flex cursor-pointer list-none items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
+                  pathname.startsWith("/admin/footer")
+                    ? "bg-primary text-primary-foreground"
+                    : "text-foreground/75 hover:bg-secondary hover:text-foreground",
+                )}
+              >
+                <PanelBottom className="size-4" aria-hidden />
+                <span className="flex-1">Footer</span>
+                <ChevronDown
+                  className="size-4 transition-transform group-open:rotate-180"
+                  aria-hidden
+                />
+              </summary>
+              <div className="mt-1 space-y-1 pl-6">
+                <Link
+                  href="/admin/footer"
+                  className={cn(
+                    "block rounded-lg px-3 py-2 text-sm transition-colors",
+                    pathname === "/admin/footer"
+                      ? "bg-secondary font-medium text-primary"
+                      : "text-muted-foreground hover:bg-secondary hover:text-foreground",
+                  )}
+                >
+                  All sections
+                </Link>
+                {ADMIN_FOOTER.sections.map((section) => {
+                  const href = `/admin/footer/${section.slug}`;
+                  const active = pathname === href;
+                  return (
+                    <Link
+                      key={section.slug}
+                      href={href}
+                      className={cn(
+                        "block rounded-lg px-3 py-2 text-sm transition-colors",
+                        active
+                          ? "bg-secondary font-medium text-primary"
+                          : "text-muted-foreground hover:bg-secondary hover:text-foreground",
+                      )}
+                    >
+                      {section.title}
+                    </Link>
+                  );
+                })}
+              </div>
+            </details>
             {primaryNav.slice(1).map((item) => {
               const active = pathname.startsWith(item.href);
               const Icon = item.icon;
@@ -157,6 +207,7 @@ export function AdminShell({
             {[
               primaryNav[0]!,
               { href: "/admin/pages", label: "Pages", icon: FileText },
+              { href: "/admin/footer", label: "Footer", icon: PanelBottom },
               ...primaryNav.slice(1),
             ].map((item) => (
               <Link
@@ -194,9 +245,31 @@ export function AdminShell({
               })}
             </nav>
           ) : null}
+          {pathname.startsWith("/admin/footer") ? (
+            <nav className="flex gap-1 overflow-x-auto border-b border-border bg-card px-2 py-2 lg:hidden">
+              {ADMIN_FOOTER.sections.map((section) => {
+                const href = `/admin/footer/${section.slug}`;
+                return (
+                  <Link
+                    key={section.slug}
+                    href={href}
+                    className={cn(
+                      "shrink-0 rounded-md px-3 py-1.5 text-xs",
+                      pathname === href
+                        ? "bg-secondary font-medium text-primary"
+                        : "text-muted-foreground",
+                    )}
+                  >
+                    {section.title}
+                  </Link>
+                );
+              })}
+            </nav>
+          ) : null}
           <main className="flex-1 p-4 sm:p-6">{children}</main>
         </div>
       </div>
+      <Toaster position="top-right" />
     </div>
   );
 }

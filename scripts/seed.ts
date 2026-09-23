@@ -21,6 +21,18 @@ const docs: Record<ContentKey, unknown> = {
     social: { ...siteData.social },
     nav: siteData.nav.map((item) => ({ ...item })),
     credit: siteData.credit,
+    footerBrand: {
+      name: siteData.footerBrand.name,
+      description: siteData.footerBrand.description,
+      social: { ...siteData.footerBrand.social },
+    },
+    footerQuickLinks: {
+      heading: siteData.footerQuickLinks.heading,
+      links: siteData.footerQuickLinks.links.map((item) => ({ ...item })),
+    },
+    footerReachUs: { ...siteData.footerReachUs },
+    footerHeadOffice: { ...siteData.footerHeadOffice },
+    footerLegal: { ...siteData.footerLegal },
   },
   home: {
     hero: homeData.heroContent,

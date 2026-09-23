@@ -1,11 +1,12 @@
 import Link from "next/link";
-import { Files, ImageIcon, Inbox, Settings } from "lucide-react";
+import { Files, ImageIcon, Inbox, PanelBottom, Settings } from "lucide-react";
 import { countEnquiries, listDocuments } from "@/lib/db/queries";
 import { hasDatabaseUrl } from "@/lib/db";
 import { CONTENT_KEYS } from "@/lib/db/schema";
 
 const links = [
   { href: "/admin/pages", label: "Pages", icon: Files },
+  { href: "/admin/footer", label: "Footer", icon: PanelBottom },
   { href: "/admin/site", label: "Site settings", icon: Settings },
   { href: "/admin/media", label: "Media library", icon: ImageIcon },
   { href: "/admin/enquiries", label: "Enquiries", icon: Inbox },

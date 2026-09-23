@@ -13,6 +13,7 @@ export type AdminPageDefinition = {
   title: string;
   description: string;
   publicPath: string;
+  adminBase?: string;
   sections: readonly AdminSection[];
 };
 
@@ -292,10 +293,57 @@ export const ADMIN_PAGES: readonly AdminPageDefinition[] = [
   },
 ] as const;
 
+export const ADMIN_FOOTER: AdminPageDefinition = {
+  slug: "footer",
+  docKey: "site",
+  title: "Footer",
+  description: "Manage each column and the legal bar shown on every public page.",
+  publicPath: "/",
+  adminBase: "/admin/footer",
+  sections: [
+    {
+      slug: "brand",
+      key: "footerBrand",
+      title: "Brand",
+      description: "Academy name, description, and social links in the first column.",
+    },
+    {
+      slug: "quick-links",
+      key: "footerQuickLinks",
+      title: "Quick links",
+      description: "Footer navigation heading and links.",
+    },
+    {
+      slug: "reach-us",
+      key: "footerReachUs",
+      title: "Reach us",
+      description: "Contact heading, phones, email, and address.",
+    },
+    {
+      slug: "head-office",
+      key: "footerHeadOffice",
+      title: "Head office",
+      description: "Head office heading and admissions copy.",
+    },
+    {
+      slug: "legal",
+      key: "footerLegal",
+      title: "Legal bar",
+      description: "Credit line in the footer bottom bar.",
+    },
+  ],
+};
+
 export function getAdminPage(slug: string) {
+  if (slug === ADMIN_FOOTER.slug) return ADMIN_FOOTER;
   return ADMIN_PAGES.find((page) => page.slug === slug);
 }
 
 export function getAdminSection(page: AdminPageDefinition, slug: string) {
   return page.sections.find((section) => section.slug === slug);
+}
+
+export function adminEditorPath(page: AdminPageDefinition, sectionSlug?: string) {
+  const base = page.adminBase ?? `/admin/pages/${page.slug}`;
+  return sectionSlug ? `${base}/${sectionSlug}` : base;
 }

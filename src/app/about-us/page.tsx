@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Check } from "lucide-react";
+import { Check, Facebook, Instagram, MessageCircle } from "lucide-react";
 import { getAboutContent } from "@/lib/content";
 import { SiteLayout } from "@/components/SiteLayout";
 import { PageHero } from "@/components/PageHero";
@@ -8,6 +8,11 @@ import { Reveal } from "@/components/Reveal";
 import { Icon } from "@/components/Icon";
 import { CTASection } from "@/components/CTASection";
 import { ResponsiveImage } from "@/components/ResponsiveImage";
+
+function whatsappHref(value: string) {
+  if (/^https?:\/\//i.test(value)) return value;
+  return `https://wa.me/${value.replace(/\D/g, "")}`;
+}
 
 const title = "About Us | NAPT Academy — Defence Training Institute in Wayanad";
 const description =
@@ -136,22 +141,71 @@ export default async function AboutPage() {
             body={teamSection.body}
           />
           <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {team.map((member, i) => (
-              <Reveal key={member.id} delay={i * 60}>
-                <article className="overflow-hidden rounded-2xl border border-border bg-card shadow-card">
-                  <ResponsiveImage
-                    image={member.image}
-                    width={640}
-                    height={800}
-                    className="h-60 w-full object-cover"
-                  />
-                  <div className="p-5">
-                    <h3 className="font-semibold text-foreground">{member.name}</h3>
-                    <p className="mt-1 text-sm text-muted-foreground">{member.designation}</p>
-                  </div>
-                </article>
-              </Reveal>
-            ))}
+            {team.map((member, i) => {
+              const facebook = member.facebook?.trim();
+              const instagram = member.instagram?.trim();
+              const whatsapp = member.whatsapp?.trim();
+              const hasSocial = Boolean(facebook || instagram || whatsapp);
+
+              return (
+                <Reveal key={member.id} delay={i * 60}>
+                  <article className="overflow-hidden rounded-2xl border border-border bg-card shadow-card">
+                    <div className="group relative overflow-hidden">
+                      <ResponsiveImage
+                        image={member.image}
+                        width={640}
+                        height={800}
+                        className="h-60 w-full object-cover"
+                      />
+                      {hasSocial ? (
+                        <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center gap-4 bg-ink/55 px-4 opacity-0 backdrop-blur-md transition-opacity duration-300 group-hover:pointer-events-auto group-hover:opacity-100 group-focus-within:pointer-events-auto group-focus-within:opacity-100">
+                          <p className="text-center text-sm font-semibold text-cream">{member.name}</p>
+                          <div className="flex items-center gap-3">
+                            {facebook ? (
+                              <a
+                                href={facebook}
+                                target="_blank"
+                                rel="noreferrer"
+                                aria-label={`${member.name} on Facebook`}
+                                className="inline-flex size-9 items-center justify-center rounded-full bg-cream/15 text-cream transition-colors hover:bg-gold hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold"
+                              >
+                                <Facebook className="size-4" aria-hidden />
+                              </a>
+                            ) : null}
+                            {instagram ? (
+                              <a
+                                href={instagram}
+                                target="_blank"
+                                rel="noreferrer"
+                                aria-label={`${member.name} on Instagram`}
+                                className="inline-flex size-9 items-center justify-center rounded-full bg-cream/15 text-cream transition-colors hover:bg-gold hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold"
+                              >
+                                <Instagram className="size-4" aria-hidden />
+                              </a>
+                            ) : null}
+                            {whatsapp ? (
+                              <a
+                                href={whatsappHref(whatsapp)}
+                                target="_blank"
+                                rel="noreferrer"
+                                aria-label={`WhatsApp ${member.name}`}
+                                className="inline-flex size-9 items-center justify-center rounded-full bg-cream/15 text-cream transition-colors hover:bg-gold hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold"
+                              >
+                                <MessageCircle className="size-4" aria-hidden />
+                              </a>
+                            ) : null}
+                          </div>
+                        </div>
+                      ) : null}
+                    </div>
+                    <div className="p-5">
+                      <h3 className="font-semibold text-foreground">{member.name}</h3>
+                      <p className="mt-1 text-sm text-muted-foreground">{member.designation}</p>
+                    </div>
+                  </article>
+                </Reveal>
+              );
+            })}
           </div>
         </div>
       </section>

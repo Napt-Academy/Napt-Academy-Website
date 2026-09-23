@@ -45,6 +45,9 @@ export type TeamMember = {
   name: string;
   designation: string;
   image: ImageAsset;
+  facebook?: string;
+  instagram?: string;
+  whatsapp?: string;
 };
 
 export type Service = {
@@ -73,6 +76,8 @@ export type TrainingCenter = {
   address: string;
   phone: string;
   whatsapp?: string;
+  facebook?: string;
+  instagram?: string;
   mapUrl?: string;
 };
 

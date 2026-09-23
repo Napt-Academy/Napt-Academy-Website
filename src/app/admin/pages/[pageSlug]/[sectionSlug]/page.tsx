@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ExternalLink } from "lucide-react";
+import { CentersTable } from "@/components/admin/CentersTable";
+import { TeamMembersTable } from "@/components/admin/TeamMembersTable";
 import { SectionEditor } from "@/components/admin/SectionEditor";
 import { getAdminPage, getAdminSection } from "@/lib/admin-pages";
 import { localFallbacks, mergeContentData } from "@/lib/content";
@@ -23,7 +25,11 @@ export default async function AdminSectionPage({
   if (typeof initialData === "undefined") notFound();
 
   return (
-    <div className="mx-auto max-w-4xl space-y-6">
+    <div
+      className={`space-y-6 ${
+        section.key === "centers" || section.key === "team" ? "mx-auto max-w-6xl" : "mx-auto max-w-4xl"
+      }`}
+    >
       <div>
         <Link
           href={`/admin/pages/${page.slug}`}
@@ -49,7 +55,13 @@ export default async function AdminSectionPage({
           </a>
         </div>
       </div>
-      <SectionEditor pageSlug={page.slug} sectionSlug={section.slug} initialData={initialData} />
+      {section.key === "centers" ? (
+        <CentersTable pageSlug={page.slug} sectionSlug={section.slug} initialCenters={initialData} />
+      ) : section.key === "team" ? (
+        <TeamMembersTable pageSlug={page.slug} sectionSlug={section.slug} initialMembers={initialData} />
+      ) : (
+        <SectionEditor pageSlug={page.slug} sectionSlug={section.slug} initialData={initialData} />
+      )}
     </div>
   );
 }

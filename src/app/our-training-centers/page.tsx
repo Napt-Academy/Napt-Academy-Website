@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { MapPin, MessageCircle, Phone } from "lucide-react";
+import type { ReactNode } from "react";
+import { Facebook, Instagram, MapPin, MessageCircle, Phone } from "lucide-react";
 import { getTrainingCentersContent } from "@/lib/content";
 import { SiteLayout } from "@/components/SiteLayout";
 import { PageHero } from "@/components/PageHero";
@@ -31,6 +32,33 @@ export const metadata: Metadata = {
     description,
   },
 };
+
+function whatsappHref(value: string) {
+  if (/^https?:\/\//i.test(value)) return value;
+  return `https://wa.me/${value.replace(/\D/g, "")}`;
+}
+
+function CenterIconLink({
+  href,
+  label,
+  children,
+}: {
+  href: string;
+  label: string;
+  children: ReactNode;
+}) {
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noreferrer"
+      aria-label={label}
+      className="inline-flex size-9 items-center justify-center rounded-md border border-border text-foreground transition-colors hover:bg-secondary"
+    >
+      {children}
+    </a>
+  );
+}
 
 export default async function CentersPage() {
   const { hero, intro, locationsIntro, centers, feature, opportunities, cta } =
@@ -77,7 +105,7 @@ export default async function CentersPage() {
                     <MapPin className="mt-0.5 size-4 shrink-0 text-primary" aria-hidden />
                     {center.address}
                   </p>
-                  <div className="mt-5 flex flex-wrap gap-2 pt-2">
+                  <div className="mt-5 flex flex-wrap items-center gap-2 pt-2">
                     <a
                       href={`tel:${center.phone.replace(/\s/g, "")}`}
                       className="inline-flex items-center gap-2 rounded-md bg-primary px-3 py-2 text-xs font-medium text-primary-foreground transition-opacity hover:opacity-90"
@@ -86,26 +114,24 @@ export default async function CentersPage() {
                       Call
                     </a>
                     {center.whatsapp ? (
-                      <a
-                        href={`https://wa.me/${center.whatsapp}`}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="inline-flex items-center gap-2 rounded-md border border-border px-3 py-2 text-xs font-medium text-foreground transition-colors hover:bg-secondary"
-                      >
-                        <MessageCircle className="size-3.5" aria-hidden />
-                        WhatsApp
-                      </a>
+                      <CenterIconLink href={whatsappHref(center.whatsapp)} label={`WhatsApp ${center.name}`}>
+                        <MessageCircle className="size-4" aria-hidden />
+                      </CenterIconLink>
+                    ) : null}
+                    {center.facebook ? (
+                      <CenterIconLink href={center.facebook} label={`${center.name} on Facebook`}>
+                        <Facebook className="size-4" aria-hidden />
+                      </CenterIconLink>
+                    ) : null}
+                    {center.instagram ? (
+                      <CenterIconLink href={center.instagram} label={`${center.name} on Instagram`}>
+                        <Instagram className="size-4" aria-hidden />
+                      </CenterIconLink>
                     ) : null}
                     {center.mapUrl ? (
-                      <a
-                        href={center.mapUrl}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="inline-flex items-center gap-2 rounded-md border border-border px-3 py-2 text-xs font-medium text-foreground transition-colors hover:bg-secondary"
-                      >
-                        <MapPin className="size-3.5" aria-hidden />
-                        Directions
-                      </a>
+                      <CenterIconLink href={center.mapUrl} label={`${center.name} location`}>
+                        <MapPin className="size-4" aria-hidden />
+                      </CenterIconLink>
                     ) : null}
                   </div>
                 </article>
@@ -127,24 +153,29 @@ export default async function CentersPage() {
       </section>
 
       <section className="py-16 sm:py-24">
-        <div className="section-x">
-          <SectionHeading
-            eyebrow={opportunities.eyebrow}
-            title={opportunities.heading}
-            body={opportunities.body}
-          />
-          <div className="mt-12 grid gap-6 lg:grid-cols-3">
+        <div className="section-x grid items-start gap-12 lg:grid-cols-2 lg:gap-16">
+          <Reveal>
+            <h2 className="text-3xl font-semibold leading-tight text-foreground sm:text-4xl lg:text-[2.75rem]">
+              {opportunities.heading}
+            </h2>
+            <p className="mt-5 text-base leading-relaxed text-muted-foreground sm:text-lg">
+              {opportunities.body}
+            </p>
+          </Reveal>
+          <div className="space-y-8">
             {opportunities.benefits.map((benefit, i) => (
               <Reveal key={benefit.id} delay={i * 80}>
-                <article className="h-full rounded-2xl border border-border bg-card p-7 shadow-card">
-                  <span className="flex size-12 items-center justify-center rounded-xl bg-secondary text-primary">
+                <div className="flex gap-4">
+                  <span className="flex size-12 shrink-0 items-center justify-center rounded-xl bg-secondary text-primary">
                     <Icon name={benefit.icon} className="size-6" />
                   </span>
-                  <h3 className="mt-5 text-lg font-semibold text-foreground">{benefit.title}</h3>
-                  <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-                    {benefit.description}
-                  </p>
-                </article>
+                  <div>
+                    <h3 className="text-lg font-semibold text-foreground">{benefit.title}</h3>
+                    <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                      {benefit.description}
+                    </p>
+                  </div>
+                </div>
               </Reveal>
             ))}
           </div>
