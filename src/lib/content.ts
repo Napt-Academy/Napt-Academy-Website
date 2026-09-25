@@ -73,6 +73,8 @@ async function loadContent<T>(key: ContentKey, fallback: T): Promise<T> {
 
 export type SiteContent = {
   name: string;
+  logo?: string;
+  footerLogo?: string;
   tagline: string;
   description: string;
   phone: string;
@@ -178,6 +180,7 @@ export const getServicesContent = () =>
     eligibility: servicesData.eligibility,
     eligibilityIntro: servicesData.eligibilityIntro,
     faqs: servicesData.faqs,
+    faqsMl: servicesData.faqsMl,
     faqIntro: servicesData.faqIntro,
     cta: servicesData.servicesCta,
   });
@@ -263,6 +266,7 @@ export function localFallbacks() {
       eligibility: servicesData.eligibility,
       eligibilityIntro: servicesData.eligibilityIntro,
       faqs: servicesData.faqs,
+      faqsMl: servicesData.faqsMl,
       faqIntro: servicesData.faqIntro,
       cta: servicesData.servicesCta,
     },

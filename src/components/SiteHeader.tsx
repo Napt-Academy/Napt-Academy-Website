@@ -33,29 +33,13 @@ export function SiteHeader({ overlay = false, site }: { overlay?: boolean; site:
         light ? "border-transparent bg-transparent" : "border-border/70 bg-cream/90 backdrop-blur",
       )}
     >
-      <div className="section-x flex h-18 items-center justify-between gap-4 py-3">
-        <Link href="/" className="flex items-center gap-3" aria-label={`${site.name} home`}>
-          <span className="flex size-10 items-center justify-center rounded-full bg-primary text-sm font-bold tracking-widest text-primary-foreground">
-            N
-          </span>
-          <span className="leading-tight">
-            <span
-              className={cn(
-                "block font-display text-lg font-semibold",
-                light ? "text-cream" : "text-foreground",
-              )}
-            >
-              {site.name}
-            </span>
-            <span
-              className={cn(
-                "block text-[11px] tracking-wide",
-                light ? "text-cream/70" : "text-muted-foreground",
-              )}
-            >
-              {site.tagline}
-            </span>
-          </span>
+      <div className="section-x flex items-center justify-between gap-4 py-2">
+        <Link href="/" aria-label={`${site.name} home`}>
+          <img
+            src={site.logo?.trim() || "/brand/napt-logo.png"}
+            alt=""
+            className="h-16 w-auto object-contain sm:h-20"
+          />
         </Link>
 
         <nav aria-label="Main" className="hidden items-center gap-1 lg:flex">

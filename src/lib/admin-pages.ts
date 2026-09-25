@@ -194,6 +194,12 @@ export const ADMIN_PAGES: readonly AdminPageDefinition[] = [
         description: "Questions and answers displayed on the page.",
       },
       {
+        slug: "faqs-ml",
+        key: "faqsMl",
+        title: "FAQ Malayalam",
+        description: "Malayalam questions and answers shown in the right-hand column. Edited separately from the English list.",
+      },
+      {
         slug: "faq-intro",
         key: "faqIntro",
         title: "FAQ introduction",

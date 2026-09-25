@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, type ReactNode } from "react";
-import { Plus, Save, Trash2 } from "lucide-react";
+import { ImagePlus, Plus, Save, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { saveDocumentAction } from "@/app/admin/actions";
 import { Button } from "@/components/ui/button";
@@ -12,8 +12,12 @@ import type { SiteContent } from "@/lib/content";
 
 type NavItem = { label: string; to: string };
 
+const fallbackLogo = "/brand/napt-logo.png";
+
 type SiteFormState = {
   name: string;
+  logo: string;
+  footerLogo: string;
   tagline: string;
   description: string;
   phone: string;
@@ -33,6 +37,8 @@ type SiteFormState = {
 function toFormState(data: SiteContent | null | undefined): SiteFormState {
   return {
     name: data?.name ?? "",
+    logo: data?.logo ?? "",
+    footerLogo: data?.footerLogo ?? "",
     tagline: data?.tagline ?? "",
     description: data?.description ?? "",
     phone: data?.phone ?? "",
@@ -92,6 +98,7 @@ export function SiteSettingsEditor({
   const [form, setForm] = useState(() => toFormState(initialData));
   const [dirty, setDirty] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [uploading, setUploading] = useState<"logo" | "footerLogo" | null>(null);
 
   function update<K extends keyof SiteFormState>(key: K, value: SiteFormState[K]) {
     setForm((current) => ({ ...current, [key]: value }));
@@ -130,6 +137,26 @@ export function SiteSettingsEditor({
     setDirty(true);
   }
 
+  async function uploadLogo(field: "logo" | "footerLogo", file: File | undefined) {
+    if (!file) return;
+    setUploading(field);
+    try {
+      const formData = new FormData();
+      formData.append("images", file);
+      formData.append("alt", field === "footerLogo" ? "Footer logo" : form.name || "Header logo");
+      const response = await fetch("/api/admin/media", { method: "POST", body: formData });
+      const payload = (await response.json()) as { urls?: string[]; error?: string };
+      const url = payload.urls?.[0];
+      if (!response.ok || !url) throw new Error(payload.error ?? "Upload failed");
+      update(field, url);
+      toast.success(field === "footerLogo" ? "Footer logo uploaded" : "Logo uploaded");
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Upload failed");
+    } finally {
+      setUploading(null);
+    }
+  }
+
   async function onSave() {
     if (!form.name.trim()) {
       toast.error("Site name is required.");
@@ -138,8 +165,12 @@ export function SiteSettingsEditor({
 
     setSaving(true);
     try {
+      const logo = form.logo.trim();
+      const footerLogo = form.footerLogo.trim();
       const next: SiteContent = {
         name: form.name.trim(),
+        ...(logo ? { logo } : {}),
+        ...(footerLogo ? { footerLogo } : {}),
         tagline: form.tagline.trim(),
         description: form.description.trim(),
         phone: form.phone.trim(),
@@ -187,6 +218,75 @@ export function SiteSettingsEditor({
       </div>
 
       <FieldGroup title="Brand">
+        <div className="space-y-3">
+          <Label>Header logo</Label>
+          <img
+            src={form.logo.trim() || fallbackLogo}
+            alt=""
+            className="h-16 w-auto object-contain"
+          />
+          <div className="flex flex-wrap gap-2">
+            <label className="inline-flex cursor-pointer items-center gap-2 rounded-lg border border-border bg-background px-3 py-2 text-sm hover:bg-secondary">
+              <ImagePlus className="size-4" aria-hidden />
+              {uploading === "logo" ? "Uploading…" : form.logo.trim() ? "Replace logo" : "Upload logo"}
+              <input
+                type="file"
+                accept="image/jpeg,image/png,image/webp,image/avif"
+                className="hidden"
+                disabled={uploading !== null}
+                onChange={(event) => {
+                  void uploadLogo("logo", event.target.files?.[0]);
+                  event.target.value = "";
+                }}
+              />
+            </label>
+            {form.logo.trim() ? (
+              <Button type="button" variant="outline" onClick={() => update("logo", "")} disabled={uploading !== null}>
+                Use fallback logo
+              </Button>
+            ) : null}
+          </div>
+          <p className="text-xs text-muted-foreground">
+            Shown in the site header. Clearing an upload restores the NAPT logo.
+          </p>
+        </div>
+        <div className="space-y-3">
+          <Label>Footer logo</Label>
+          <img
+            src={form.footerLogo.trim() || form.logo.trim() || fallbackLogo}
+            alt=""
+            className="h-16 w-auto object-contain"
+          />
+          <div className="flex flex-wrap gap-2">
+            <label className="inline-flex cursor-pointer items-center gap-2 rounded-lg border border-border bg-background px-3 py-2 text-sm hover:bg-secondary">
+              <ImagePlus className="size-4" aria-hidden />
+              {uploading === "footerLogo" ? "Uploading…" : form.footerLogo.trim() ? "Replace logo" : "Upload logo"}
+              <input
+                type="file"
+                accept="image/jpeg,image/png,image/webp,image/avif"
+                className="hidden"
+                disabled={uploading !== null}
+                onChange={(event) => {
+                  void uploadLogo("footerLogo", event.target.files?.[0]);
+                  event.target.value = "";
+                }}
+              />
+            </label>
+            {form.footerLogo.trim() ? (
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => update("footerLogo", "")}
+                disabled={uploading !== null}
+              >
+                Use header logo
+              </Button>
+            ) : null}
+          </div>
+          <p className="text-xs text-muted-foreground">
+            Shown in the footer. Leave this empty to use the header logo.
+          </p>
+        </div>
         <TextField id="site-name" label="Name" value={form.name} onChange={(v) => update("name", v)} />
         <TextField
           id="site-tagline"

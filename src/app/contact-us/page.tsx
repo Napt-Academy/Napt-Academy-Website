@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { getContactContent, getTrainingCenters } from "@/lib/content";
+import { getContactContent, getSiteContent, getTrainingCenters } from "@/lib/content";
 import { SiteLayout } from "@/components/SiteLayout";
 import { PageHero } from "@/components/PageHero";
 import { Reveal } from "@/components/Reveal";
@@ -31,10 +31,12 @@ export const metadata: Metadata = {
 };
 
 export default async function ContactPage() {
-  const [{ hero, channels, form, cta }, centers] = await Promise.all([
+  const [{ hero, channels, form, cta }, centers, site] = await Promise.all([
     getContactContent(),
     getTrainingCenters(),
+    getSiteContent(),
   ]);
+  const mapSrc = `https://maps.google.com/maps?q=${encodeURIComponent(site.address)}&z=15&output=embed`;
 
   return (
     <SiteLayout>
@@ -71,14 +73,21 @@ export default async function ContactPage() {
             ))}
           </div>
 
-          <div className="mt-16">
-            <Reveal>
-              <ContactForm
-                heading={form.heading}
-                body={form.body}
-                centers={centers.map((center) => ({ id: center.id, name: center.name }))}
+          <div className="mt-16 grid items-stretch gap-6 lg:grid-cols-2">
+            <div className="relative h-full min-h-80 overflow-hidden rounded-2xl">
+              <iframe
+                title="NAPT Academy head office on Google Maps"
+                src={mapSrc}
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                className="absolute inset-0 size-full border-0"
               />
-            </Reveal>
+            </div>
+            <ContactForm
+              heading={form.heading}
+              body={form.body}
+              centers={centers.map((center) => ({ id: center.id, name: center.name }))}
+            />
           </div>
         </div>
       </section>
