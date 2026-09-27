@@ -191,6 +191,7 @@ export function SiteSettingsEditor({
         footerQuickLinks: initialData?.footerQuickLinks ?? fallback.footerQuickLinks,
         footerReachUs: initialData?.footerReachUs ?? fallback.footerReachUs,
         footerHeadOffice: initialData?.footerHeadOffice ?? fallback.footerHeadOffice,
+        footerSocial: initialData?.footerSocial ?? fallback.footerSocial,
         footerLegal: initialData?.footerLegal ?? fallback.footerLegal,
       };
 

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ExternalLink } from "lucide-react";
+import { AchievementsEditor } from "@/components/admin/AchievementsEditor";
 import { CentersTable } from "@/components/admin/CentersTable";
 import { TeamMembersTable } from "@/components/admin/TeamMembersTable";
 import { SectionEditor } from "@/components/admin/SectionEditor";
@@ -27,7 +28,9 @@ export default async function AdminSectionPage({
   return (
     <div
       className={`space-y-6 ${
-        section.key === "centers" || section.key === "team" ? "mx-auto max-w-6xl" : "mx-auto max-w-4xl"
+        section.key === "centers" || section.key === "team" || section.key === "achievements"
+          ? "mx-auto max-w-6xl"
+          : "mx-auto max-w-4xl"
       }`}
     >
       <div>
@@ -59,6 +62,8 @@ export default async function AdminSectionPage({
         <CentersTable pageSlug={page.slug} sectionSlug={section.slug} initialCenters={initialData} />
       ) : section.key === "team" ? (
         <TeamMembersTable pageSlug={page.slug} sectionSlug={section.slug} initialMembers={initialData} />
+      ) : section.key === "achievements" ? (
+        <AchievementsEditor pageSlug={page.slug} sectionSlug={section.slug} initialData={initialData} />
       ) : (
         <SectionEditor pageSlug={page.slug} sectionSlug={section.slug} initialData={initialData} />
       )}

@@ -126,6 +126,37 @@ export const missionVisionValues: ValueCard[] = [
   },
 ];
 
+export const achievements = {
+  eyebrow: "Achievements",
+  heading: "Students Selected For The Forces",
+  body: "",
+  ctaLabel: "",
+  ctaHref: "",
+  items: [
+    {
+      id: "sample-army",
+      name: "Sample Student 1",
+      force: "Indian Army",
+      description: "Placeholder card. Replace this with a student selected from NAPT Academy.",
+      image: { src: "", alt: "" } as ImageAsset,
+    },
+    {
+      id: "sample-navy",
+      name: "Sample Student 2",
+      force: "Indian Navy",
+      description: "Placeholder card. Replace this with a student selected from NAPT Academy.",
+      image: { src: "", alt: "" } as ImageAsset,
+    },
+    {
+      id: "sample-air-force",
+      name: "Sample Student 3",
+      force: "Indian Air Force",
+      description: "Placeholder card. Replace this with a student selected from NAPT Academy.",
+      image: { src: "", alt: "" } as ImageAsset,
+    },
+  ],
+};
+
 export const careerSection = {
   eyebrow: "Our Track Record",
   heading: ["Building Careers", "That Serve The", "Nation"],
