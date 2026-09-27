@@ -53,6 +53,13 @@ export const siteData = {
     heading: "Panamaram Head Office",
     body: "Admissions open for Army, Navy, Air Force, Paramilitary, Police, Excise and Forest recruitment batches across all NAPT training centres in Kerala.",
   },
+  footerSocial: {
+    heading: "Social Media",
+    facebook: "https://facebook.com",
+    instagram: "https://instagram.com",
+    whatsapp: "https://wa.me/919745129069",
+    gmail: "naptwayanad2017@gmail.com",
+  },
   footerLegal: {
     credit: "Powered By | Medbobty | All Rights Reserved",
   },

@@ -56,6 +56,13 @@ export const ADMIN_PAGES: readonly AdminPageDefinition[] = [
         description: "The principles and messages shown below training.",
       },
       {
+        slug: "achievements",
+        key: "achievements",
+        title: "Student achievements",
+        description:
+          "Heading, button, and cards for students selected into the forces. Empty name and force cards stay off the public page.",
+      },
+      {
         slug: "career",
         key: "career",
         title: "Career & statistics",
@@ -346,7 +353,7 @@ export const ADMIN_FOOTER: AdminPageDefinition = {
       slug: "brand",
       key: "footerBrand",
       title: "Brand",
-      description: "Academy name, description, and social links in the first column.",
+      description: "Academy name and description in the first column.",
     },
     {
       slug: "quick-links",
@@ -361,10 +368,10 @@ export const ADMIN_FOOTER: AdminPageDefinition = {
       description: "Contact heading, phones, email, and address.",
     },
     {
-      slug: "head-office",
-      key: "footerHeadOffice",
-      title: "Head office",
-      description: "Head office heading and admissions copy.",
+      slug: "social",
+      key: "footerSocial",
+      title: "Social",
+      description: "Heading and WhatsApp, Instagram, Facebook, and Gmail links in the fourth footer column.",
     },
     {
       slug: "legal",

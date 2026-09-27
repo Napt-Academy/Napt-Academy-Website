@@ -3,7 +3,19 @@ import { Facebook, Instagram, Mail, MapPin, MessageCircle, Phone } from "lucide-
 import type { SiteContent } from "@/lib/content";
 
 export function SiteFooter({ site }: { site: SiteContent }) {
-  const { footerBrand, footerQuickLinks, footerReachUs, footerHeadOffice, footerLegal } = site;
+  const { footerBrand, footerQuickLinks, footerReachUs, footerSocial, footerLegal } = site;
+  const gmail = footerSocial.gmail.trim();
+  const gmailHref = gmail
+    ? gmail.toLowerCase().startsWith("mailto:")
+      ? gmail
+      : `mailto:${gmail}`
+    : "";
+  const socialLinks = [
+    { href: footerSocial.whatsapp.trim(), label: "WhatsApp", icon: MessageCircle },
+    { href: footerSocial.instagram.trim(), label: "Instagram", icon: Instagram },
+    { href: footerSocial.facebook.trim(), label: "Facebook", icon: Facebook },
+    { href: gmailHref, label: "Gmail", icon: Mail },
+  ].filter((item) => item.href);
 
   return (
     <footer className="bg-forest text-cream">
@@ -15,29 +27,6 @@ export function SiteFooter({ site }: { site: SiteContent }) {
             className="h-20 w-auto object-contain"
           />
           <p className="mt-3 text-sm leading-relaxed text-cream/70">{footerBrand.description}</p>
-          <div className="mt-5 flex gap-3">
-            <a
-              href={footerBrand.social.facebook}
-              aria-label="Facebook"
-              className="flex size-9 items-center justify-center rounded-full bg-cream/10 transition-colors hover:bg-gold hover:text-ink"
-            >
-              <Facebook className="size-4" />
-            </a>
-            <a
-              href={footerBrand.social.instagram}
-              aria-label="Instagram"
-              className="flex size-9 items-center justify-center rounded-full bg-cream/10 transition-colors hover:bg-gold hover:text-ink"
-            >
-              <Instagram className="size-4" />
-            </a>
-            <a
-              href={footerBrand.social.whatsapp}
-              aria-label="WhatsApp"
-              className="flex size-9 items-center justify-center rounded-full bg-cream/10 transition-colors hover:bg-gold hover:text-ink"
-            >
-              <MessageCircle className="size-4" />
-            </a>
-          </div>
         </div>
 
         <nav aria-label="Footer">
@@ -79,8 +68,22 @@ export function SiteFooter({ site }: { site: SiteContent }) {
         </div>
 
         <div>
-          <p className="eyebrow text-gold">{footerHeadOffice.heading}</p>
-          <p className="mt-4 text-sm leading-relaxed text-cream/75">{footerHeadOffice.body}</p>
+          <p className="eyebrow text-gold">{footerSocial.heading}</p>
+          <div className="mt-4 flex gap-3">
+            {socialLinks.map((item) => {
+              const Icon = item.icon;
+              return (
+                <a
+                  key={item.label}
+                  href={item.href}
+                  aria-label={item.label}
+                  className="flex size-9 items-center justify-center rounded-full bg-cream/10 transition-colors hover:bg-gold hover:text-ink"
+                >
+                  <Icon className="size-4" />
+                </a>
+              );
+            })}
+          </div>
         </div>
       </div>
 

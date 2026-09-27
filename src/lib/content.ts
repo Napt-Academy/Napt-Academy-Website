@@ -114,6 +114,13 @@ export type SiteContent = {
     heading: string;
     body: string;
   };
+  footerSocial: {
+    heading: string;
+    facebook: string;
+    instagram: string;
+    whatsapp: string;
+    gmail: string;
+  };
   footerLegal: {
     credit: string;
   };
@@ -143,6 +150,7 @@ export const getSiteContent = () =>
     },
     footerReachUs: { ...siteData.footerReachUs },
     footerHeadOffice: { ...siteData.footerHeadOffice },
+    footerSocial: { ...siteData.footerSocial },
     footerLegal: { ...siteData.footerLegal },
   });
 
@@ -153,6 +161,7 @@ export const getHomeContent = () =>
     serviceCategories: homeData.serviceCategories,
     valuesIntro: homeData.valuesIntro,
     values: homeData.missionVisionValues,
+    achievements: homeData.achievements,
     career: homeData.careerSection,
     gallery: homeData.gallery,
     testimonials: homeData.testimonials,
@@ -240,6 +249,7 @@ export function localFallbacks() {
       },
       footerReachUs: { ...siteData.footerReachUs },
       footerHeadOffice: { ...siteData.footerHeadOffice },
+      footerSocial: { ...siteData.footerSocial },
       footerLegal: { ...siteData.footerLegal },
     },
     home: {
@@ -248,6 +258,7 @@ export function localFallbacks() {
       serviceCategories: homeData.serviceCategories,
       valuesIntro: homeData.valuesIntro,
       values: homeData.missionVisionValues,
+      achievements: homeData.achievements,
       career: homeData.careerSection,
       gallery: homeData.gallery,
       testimonials: homeData.testimonials,

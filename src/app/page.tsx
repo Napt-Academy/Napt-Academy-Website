@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ChevronLeft, ChevronRight, Star } from "lucide-react";
+import { achievements as achievementFallback } from "@/data/home";
 import { getHomeContent } from "@/lib/content";
 import { buildPageMetadata } from "@/lib/seo";
 import { SiteLayout } from "@/components/SiteLayout";
@@ -42,12 +43,21 @@ export default async function HomePage() {
     serviceCategories,
     valuesIntro,
     values,
+    achievements,
     career,
     gallery,
     testimonials,
     testimonialsIntro,
     cta,
   } = await getHomeContent();
+  const savedStudents = (Array.isArray(achievements.items) ? achievements.items : []).filter(
+    (item) => item.name.trim() || item.force.trim(),
+  );
+  const selectedStudents = savedStudents.length > 0 ? savedStudents : achievementFallback.items;
+  const achievementsCta =
+    achievements.ctaLabel.trim() && achievements.ctaHref.trim()
+      ? { label: achievements.ctaLabel.trim(), href: achievements.ctaHref.trim() }
+      : null;
 
   return (
     <SiteLayout overlayHeader>
@@ -152,6 +162,67 @@ export default async function HomePage() {
               </Reveal>
             ))}
           </div>
+        </div>
+      </section>
+
+      <section className="bg-beige py-16 sm:py-24">
+        <div
+          className={`section-x grid items-center gap-12${selectedStudents.length > 0 ? " lg:grid-cols-2" : ""}`}
+        >
+          <Reveal>
+            <SectionHeading
+              align="left"
+              eyebrow={achievements.eyebrow}
+              title={achievements.heading}
+              body={achievements.body}
+            />
+            {achievementsCta ? (
+              <Button asChild size="lg" className="mt-8">
+                <Link href={achievementsCta.href}>{achievementsCta.label}</Link>
+              </Button>
+            ) : null}
+          </Reveal>
+          {selectedStudents.length > 0 ? (
+            <Carousel opts={{ align: "start" }} className="w-full pb-12 lg:pb-0">
+              <CarouselContent>
+                {selectedStudents.map((student) => (
+                  <CarouselItem key={student.id} className="lg:basis-1/2">
+                    <article className="flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-card">
+                      {student.image?.src?.trim() ? (
+                        <div className="relative h-44 w-full">
+                          <ResponsiveImage
+                            image={student.image}
+                            fill
+                            sizes="(max-width: 1024px) 100vw, 25vw"
+                            className="object-cover"
+                          />
+                        </div>
+                      ) : (
+                        <div className="flex h-36 items-center justify-center bg-forest">
+                          <span className="flex size-14 items-center justify-center rounded-xl bg-gold text-ink">
+                            <Icon name="Medal" className="size-7" />
+                          </span>
+                        </div>
+                      )}
+                      <div className="flex flex-1 flex-col p-6">
+                        <h3 className="text-lg font-semibold text-primary">{student.name}</h3>
+                        {student.force.trim() ? (
+                          <p className="mt-1 text-sm font-medium text-foreground">{student.force}</p>
+                        ) : null}
+                        {student.description.trim() ? (
+                          <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+                            {student.description}
+                          </p>
+                        ) : null}
+                      </div>
+                    </article>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <CarouselPrevious className="bottom-0 left-auto right-10 top-auto translate-y-0 lg:-left-12 lg:bottom-auto lg:right-auto lg:top-1/2 lg:-translate-y-1/2" />
+              <CarouselNext className="bottom-0 right-0 top-auto translate-y-0 lg:-right-12 lg:bottom-auto lg:top-1/2 lg:-translate-y-1/2" />
+            </Carousel>
+          ) : null}
         </div>
       </section>
 
