@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import { Check, Facebook, Instagram, MessageCircle } from "lucide-react";
 import { getAboutContent } from "@/lib/content";
+import { breadcrumbJsonLd, buildPageMetadata } from "@/lib/seo";
 import { SiteLayout } from "@/components/SiteLayout";
+import { JsonLd } from "@/components/JsonLd";
 import { PageHero } from "@/components/PageHero";
 import { SectionHeading } from "@/components/SectionHeading";
 import { Reveal } from "@/components/Reveal";
@@ -20,22 +22,15 @@ const description =
 
 export const dynamic = "force-dynamic";
 
-export const metadata: Metadata = {
-  title,
-  description,
-  alternates: { canonical: "/about-us" },
-  openGraph: {
-    title,
-    description,
-    type: "website",
-    url: "/about-us",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title,
-    description,
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const about = await getAboutContent();
+  return buildPageMetadata({
+    path: "/about-us",
+    fallbackTitle: title,
+    fallbackDescription: description,
+    seo: about.seo,
+  });
+}
 
 export default async function AboutPage() {
   const { hero, missionVision, expertTeamIntro, credentials, teamSection, team, cta } =
@@ -43,6 +38,7 @@ export default async function AboutPage() {
 
   return (
     <SiteLayout>
+      <JsonLd data={breadcrumbJsonLd("About Us", "/about-us")} />
       <PageHero title={hero.title} image={hero.image} breadcrumb="About Us" />
 
       <section className="py-16 sm:py-24">

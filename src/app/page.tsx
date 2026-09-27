@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ChevronLeft, ChevronRight, Star } from "lucide-react";
-import { getHomeContent, getSiteContent } from "@/lib/content";
+import { getHomeContent } from "@/lib/content";
+import { buildPageMetadata } from "@/lib/seo";
 import { SiteLayout } from "@/components/SiteLayout";
 import { SectionHeading } from "@/components/SectionHeading";
 import { Reveal } from "@/components/Reveal";
 import { Icon } from "@/components/Icon";
 import { CTASection } from "@/components/CTASection";
-import { JsonLd } from "@/components/JsonLd";
 import { ResponsiveImage } from "@/components/ResponsiveImage";
 import { Button } from "@/components/ui/button";
 import type { ImageAsset } from "@/types";
@@ -25,60 +25,32 @@ const description =
 
 export const dynamic = "force-dynamic";
 
-export const metadata: Metadata = {
-  title,
-  description,
-  alternates: { canonical: "/" },
-  openGraph: {
-    title,
-    description,
-    type: "website",
-    url: "/",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title,
-    description,
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const home = await getHomeContent();
+  return buildPageMetadata({
+    path: "/",
+    fallbackTitle: title,
+    fallbackDescription: description,
+    seo: home.seo,
+  });
+}
 
 export default async function HomePage() {
-  const [
-    {
-      hero,
-      trainingIntro,
-      serviceCategories,
-      valuesIntro,
-      values,
-      career,
-      gallery,
-      testimonials,
-      testimonialsIntro,
-      cta,
-    },
-    site,
-  ] = await Promise.all([getHomeContent(), getSiteContent()]);
+  const {
+    hero,
+    trainingIntro,
+    serviceCategories,
+    valuesIntro,
+    values,
+    career,
+    gallery,
+    testimonials,
+    testimonialsIntro,
+    cta,
+  } = await getHomeContent();
 
   return (
     <SiteLayout overlayHeader>
-      <JsonLd
-        data={{
-          "@context": "https://schema.org",
-          "@type": "EducationalOrganization",
-          name: site.name,
-          description,
-          telephone: site.phone,
-          email: site.email,
-          address: {
-            "@type": "PostalAddress",
-            streetAddress: "NAPT Academy Plaza Building, Near KSFE, Panamaram",
-            addressLocality: "Wayanad",
-            addressRegion: "Kerala",
-            postalCode: "670645",
-            addressCountry: "IN",
-          },
-        }}
-      />
       {/* Hero */}
       <section className="relative isolate flex h-svh min-h-svh w-full items-center overflow-hidden">
         <ResponsiveImage

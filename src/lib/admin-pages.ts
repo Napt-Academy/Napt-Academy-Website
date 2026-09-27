@@ -85,6 +85,13 @@ export const ADMIN_PAGES: readonly AdminPageDefinition[] = [
         title: "Call to action",
         description: "Closing message shown above the site footer.",
       },
+      {
+        slug: "seo",
+        key: "seo",
+        title: "SEO",
+        description:
+          "Search title (about 50–60 characters) and description (about 150–160 characters). Empty fields use the page defaults. No index and no follow apply only when site indexing is enabled.",
+      },
     ],
   },
   {
@@ -135,6 +142,13 @@ export const ADMIN_PAGES: readonly AdminPageDefinition[] = [
         key: "cta",
         title: "Call to action",
         description: "Closing message shown above the site footer.",
+      },
+      {
+        slug: "seo",
+        key: "seo",
+        title: "SEO",
+        description:
+          "Search title (about 50–60 characters) and description (about 150–160 characters). Empty fields use the page defaults. No index and no follow apply only when site indexing is enabled.",
       },
     ],
   },
@@ -211,6 +225,13 @@ export const ADMIN_PAGES: readonly AdminPageDefinition[] = [
         title: "Call to action",
         description: "Closing message shown above the site footer.",
       },
+      {
+        slug: "seo",
+        key: "seo",
+        title: "SEO",
+        description:
+          "Search title (about 50–60 characters) and description (about 150–160 characters). Empty fields use the page defaults. No index and no follow apply only when site indexing is enabled.",
+      },
     ],
   },
   {
@@ -262,6 +283,13 @@ export const ADMIN_PAGES: readonly AdminPageDefinition[] = [
         title: "Call to action",
         description: "Closing message shown above the site footer.",
       },
+      {
+        slug: "seo",
+        key: "seo",
+        title: "SEO",
+        description:
+          "Search title (about 50–60 characters) and description (about 150–160 characters). Empty fields use the page defaults. No index and no follow apply only when site indexing is enabled.",
+      },
     ],
   },
   {
@@ -294,6 +322,13 @@ export const ADMIN_PAGES: readonly AdminPageDefinition[] = [
         key: "cta",
         title: "Call to action",
         description: "Closing contact message above the footer.",
+      },
+      {
+        slug: "seo",
+        key: "seo",
+        title: "SEO",
+        description:
+          "Search title (about 50–60 characters) and description (about 150–160 characters). Empty fields use the page defaults. No index and no follow apply only when site indexing is enabled.",
       },
     ],
   },

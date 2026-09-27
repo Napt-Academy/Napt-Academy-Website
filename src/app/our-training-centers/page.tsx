@@ -2,7 +2,9 @@ import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { Facebook, Instagram, MapPin, MessageCircle, Phone } from "lucide-react";
 import { getTrainingCentersContent } from "@/lib/content";
+import { breadcrumbJsonLd, buildPageMetadata } from "@/lib/seo";
 import { SiteLayout } from "@/components/SiteLayout";
+import { JsonLd } from "@/components/JsonLd";
 import { PageHero } from "@/components/PageHero";
 import { SectionHeading } from "@/components/SectionHeading";
 import { Reveal } from "@/components/Reveal";
@@ -16,22 +18,15 @@ const description =
 
 export const dynamic = "force-dynamic";
 
-export const metadata: Metadata = {
-  title,
-  description,
-  alternates: { canonical: "/our-training-centers" },
-  openGraph: {
-    title,
-    description,
-    type: "website",
-    url: "/our-training-centers",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title,
-    description,
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const centers = await getTrainingCentersContent();
+  return buildPageMetadata({
+    path: "/our-training-centers",
+    fallbackTitle: title,
+    fallbackDescription: description,
+    seo: centers.seo,
+  });
+}
 
 function whatsappHref(value: string) {
   if (/^https?:\/\//i.test(value)) return value;
@@ -66,6 +61,7 @@ export default async function CentersPage() {
 
   return (
     <SiteLayout>
+      <JsonLd data={breadcrumbJsonLd("Our Training Centers", "/our-training-centers")} />
       <PageHero title={hero.title} image={hero.image} breadcrumb="Our Training Centers" />
 
       <section className="py-16 sm:py-24">

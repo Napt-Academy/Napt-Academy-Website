@@ -32,6 +32,8 @@ function revalidatePublic() {
   revalidatePath("/services");
   revalidatePath("/our-training-centers");
   revalidatePath("/contact-us");
+  revalidatePath("/sitemap.xml");
+  revalidatePath("/robots.txt");
   revalidatePath("/admin");
   revalidatePath("/admin/site");
   revalidatePath("/admin/home");
