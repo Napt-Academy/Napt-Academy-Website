@@ -49,8 +49,10 @@ export default async function ServicesPage() {
     eligibility,
     faqIntro,
     faqs,
+    faqsMl,
     cta,
   } = await getServicesContent();
+  const malayalamFaqs = Array.isArray(faqsMl) ? faqsMl : [];
 
   return (
     <SiteLayout>
@@ -201,20 +203,36 @@ export default async function ServicesPage() {
       </section>
 
       <section className="grain-surface py-16 sm:py-24">
-        <div className="section-x max-w-3xl">
+        <div className={malayalamFaqs.length > 0 ? "section-x" : "section-x max-w-3xl"}>
           <SectionHeading eyebrow={faqIntro.eyebrow} title={faqIntro.heading} />
-          <Accordion type="single" collapsible className="mt-10">
-            {faqs.map((faq) => (
-              <AccordionItem key={faq.id} value={faq.id}>
-                <AccordionTrigger className="text-left text-base font-semibold">
-                  {faq.question}
-                </AccordionTrigger>
-                <AccordionContent className="text-sm leading-relaxed text-muted-foreground">
-                  {faq.answer}
-                </AccordionContent>
-              </AccordionItem>
-            ))}
-          </Accordion>
+          <div className={malayalamFaqs.length > 0 ? "mt-10 grid gap-8 lg:grid-cols-2" : "mt-10"}>
+            <Accordion type="single" collapsible>
+              {faqs.map((faq) => (
+                <AccordionItem key={faq.id} value={faq.id}>
+                  <AccordionTrigger className="text-left text-base font-semibold">
+                    {faq.question}
+                  </AccordionTrigger>
+                  <AccordionContent className="text-sm leading-relaxed text-muted-foreground">
+                    {faq.answer}
+                  </AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
+            {malayalamFaqs.length > 0 ? (
+              <Accordion type="single" collapsible lang="ml">
+                {malayalamFaqs.map((faq) => (
+                  <AccordionItem key={faq.id} value={faq.id}>
+                    <AccordionTrigger className="text-left text-base font-semibold">
+                      {faq.question}
+                    </AccordionTrigger>
+                    <AccordionContent className="text-sm leading-relaxed text-muted-foreground">
+                      {faq.answer}
+                    </AccordionContent>
+                  </AccordionItem>
+                ))}
+              </Accordion>
+            ) : null}
+          </div>
         </div>
       </section>
 

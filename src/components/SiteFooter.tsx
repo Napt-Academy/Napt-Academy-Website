@@ -9,7 +9,11 @@ export function SiteFooter({ site }: { site: SiteContent }) {
     <footer className="bg-forest text-cream">
       <div className="section-x grid gap-10 py-14 md:grid-cols-2 lg:grid-cols-4">
         <div>
-          <p className="font-display text-xl font-semibold">{footerBrand.name}</p>
+          <img
+            src={site.footerLogo?.trim() || site.logo?.trim() || "/brand/napt-logo.png"}
+            alt={footerBrand.name}
+            className="h-20 w-auto object-contain"
+          />
           <p className="mt-3 text-sm leading-relaxed text-cream/70">{footerBrand.description}</p>
           <div className="mt-5 flex gap-3">
             <a
