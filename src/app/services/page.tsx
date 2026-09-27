@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { getServicesContent } from "@/lib/content";
+import { breadcrumbJsonLd, buildPageMetadata } from "@/lib/seo";
 import { SiteLayout } from "@/components/SiteLayout";
 import { PageHero } from "@/components/PageHero";
 import { SectionHeading } from "@/components/SectionHeading";
@@ -21,22 +22,15 @@ const description =
 
 export const dynamic = "force-dynamic";
 
-export const metadata: Metadata = {
-  title,
-  description,
-  alternates: { canonical: "/services" },
-  openGraph: {
-    title,
-    description,
-    type: "website",
-    url: "/services",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title,
-    description,
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const services = await getServicesContent();
+  return buildPageMetadata({
+    path: "/services",
+    fallbackTitle: title,
+    fallbackDescription: description,
+    seo: services.seo,
+  });
+}
 
 export default async function ServicesPage() {
   const {
@@ -67,6 +61,7 @@ export default async function ServicesPage() {
           })),
         }}
       />
+      <JsonLd data={breadcrumbJsonLd("Services", "/services")} />
       <PageHero title={hero.title} image={hero.image} breadcrumb="Services" />
 
       <section className="py-16 sm:py-24">

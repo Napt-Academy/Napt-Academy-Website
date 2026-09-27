@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { getContactContent, getSiteContent, getTrainingCenters } from "@/lib/content";
+import { breadcrumbJsonLd, buildPageMetadata } from "@/lib/seo";
 import { SiteLayout } from "@/components/SiteLayout";
+import { JsonLd } from "@/components/JsonLd";
 import { PageHero } from "@/components/PageHero";
 import { Reveal } from "@/components/Reveal";
 import { Icon } from "@/components/Icon";
@@ -13,22 +15,15 @@ const description =
 
 export const dynamic = "force-dynamic";
 
-export const metadata: Metadata = {
-  title,
-  description,
-  alternates: { canonical: "/contact-us" },
-  openGraph: {
-    title,
-    description,
-    type: "website",
-    url: "/contact-us",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title,
-    description,
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const contact = await getContactContent();
+  return buildPageMetadata({
+    path: "/contact-us",
+    fallbackTitle: title,
+    fallbackDescription: description,
+    seo: contact.seo,
+  });
+}
 
 export default async function ContactPage() {
   const [{ hero, channels, form, cta }, centers, site] = await Promise.all([
@@ -40,6 +35,7 @@ export default async function ContactPage() {
 
   return (
     <SiteLayout>
+      <JsonLd data={breadcrumbJsonLd("Contact Us", "/contact-us")} />
       <PageHero title={hero.title} image={hero.image} breadcrumb="Contact Us" />
 
       <section className="py-16 sm:py-24">

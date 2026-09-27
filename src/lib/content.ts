@@ -13,6 +13,7 @@ import { siteData } from "@/data/site";
 import { getJson } from "@/lib/blob";
 import { getDocumentData } from "@/lib/db/queries";
 import type { ContentKey } from "@/lib/db/schema";
+import { emptyPageSeo } from "@/lib/seo";
 
 function normalizeContent<T>(content: T): T {
   if (Array.isArray(content)) {
@@ -157,6 +158,7 @@ export const getHomeContent = () =>
     testimonials: homeData.testimonials,
     testimonialsIntro: homeData.testimonialsIntro,
     cta: homeData.homeCta,
+    seo: emptyPageSeo(),
   });
 
 export const getAboutContent = () =>
@@ -168,6 +170,7 @@ export const getAboutContent = () =>
     teamSection: aboutData.teamSection,
     team: aboutData.teamMembers,
     cta: aboutData.aboutCta,
+    seo: emptyPageSeo(),
   });
 
 export const getServicesContent = () =>
@@ -183,6 +186,7 @@ export const getServicesContent = () =>
     faqsMl: servicesData.faqsMl,
     faqIntro: servicesData.faqIntro,
     cta: servicesData.servicesCta,
+    seo: emptyPageSeo(),
   });
 
 export const getTrainingCentersContent = () =>
@@ -194,6 +198,7 @@ export const getTrainingCentersContent = () =>
     feature: centersData.centerFeature,
     opportunities: servicesData.opportunities,
     cta: centersData.centersCta,
+    seo: emptyPageSeo(),
   });
 
 export const getTrainingCenters = async () => {
@@ -207,6 +212,7 @@ export const getContactContent = () =>
     channels: contactData.contactChannels,
     form: contactData.contactForm,
     cta: contactData.contactCta,
+    seo: emptyPageSeo(),
   });
 
 export function localFallbacks() {
@@ -247,6 +253,7 @@ export function localFallbacks() {
       testimonials: homeData.testimonials,
       testimonialsIntro: homeData.testimonialsIntro,
       cta: homeData.homeCta,
+      seo: emptyPageSeo(),
     },
     about: {
       hero: aboutData.aboutHero,
@@ -256,6 +263,7 @@ export function localFallbacks() {
       teamSection: aboutData.teamSection,
       team: aboutData.teamMembers,
       cta: aboutData.aboutCta,
+      seo: emptyPageSeo(),
     },
     services: {
       hero: servicesData.servicesHero,
@@ -269,6 +277,7 @@ export function localFallbacks() {
       faqsMl: servicesData.faqsMl,
       faqIntro: servicesData.faqIntro,
       cta: servicesData.servicesCta,
+      seo: emptyPageSeo(),
     },
     "training-centers": {
       hero: centersData.centersHero,
@@ -278,12 +287,14 @@ export function localFallbacks() {
       feature: centersData.centerFeature,
       opportunities: servicesData.opportunities,
       cta: centersData.centersCta,
+      seo: emptyPageSeo(),
     },
     contact: {
       hero: contactData.contactHero,
       channels: contactData.contactChannels,
       form: contactData.contactForm,
       cta: contactData.contactCta,
+      seo: emptyPageSeo(),
     },
   } as const;
 }
