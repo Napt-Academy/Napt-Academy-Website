@@ -415,7 +415,7 @@ export function AchievementsEditor({
             </div>
             <div className="space-y-3 rounded-xl border border-border bg-background/50 p-3">
               <Label>Photo</Label>
-              <div className="relative aspect-[4/5] max-h-56 overflow-hidden rounded-lg border border-border bg-secondary">
+              <div className="relative aspect-square max-w-56 overflow-hidden rounded-lg border border-border bg-secondary">
                 {form.imageSrc ? (
                   <Image
                     src={form.imageSrc}

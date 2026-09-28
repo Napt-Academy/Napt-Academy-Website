@@ -189,7 +189,7 @@ export default async function HomePage() {
                   <CarouselItem key={student.id} className="min-w-0 basis-full lg:basis-1/2">
                     <article className="flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-card">
                       {student.image?.src?.trim() ? (
-                        <div className="relative h-44 w-full">
+                        <div className="relative aspect-square w-full">
                           <ResponsiveImage
                             image={student.image}
                             fill
@@ -198,7 +198,7 @@ export default async function HomePage() {
                           />
                         </div>
                       ) : (
-                        <div className="flex h-36 items-center justify-center bg-forest">
+                        <div className="flex aspect-square w-full items-center justify-center bg-forest">
                           <span className="flex size-14 items-center justify-center rounded-xl bg-gold text-ink">
                             <Icon name="Medal" className="size-7" />
                           </span>
@@ -208,11 +208,6 @@ export default async function HomePage() {
                         <h3 className="text-lg font-semibold text-primary">{student.name}</h3>
                         {student.force.trim() ? (
                           <p className="mt-1 text-sm font-medium text-foreground">{student.force}</p>
-                        ) : null}
-                        {student.description.trim() ? (
-                          <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-                            {student.description}
-                          </p>
                         ) : null}
                       </div>
                     </article>
