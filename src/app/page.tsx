@@ -165,11 +165,11 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="bg-beige py-16 sm:py-24">
+      <section id="achievements" className="max-lg:overflow-x-clip bg-beige py-16 sm:py-24">
         <div
-          className={`section-x grid items-center gap-12${selectedStudents.length > 0 ? " lg:grid-cols-2" : ""}`}
+          className={`section-x grid min-w-0 items-center gap-12${selectedStudents.length > 0 ? " lg:grid-cols-2" : ""}`}
         >
-          <Reveal>
+          <Reveal className="min-w-0">
             <SectionHeading
               align="left"
               eyebrow={achievements.eyebrow}
@@ -183,13 +183,13 @@ export default async function HomePage() {
             ) : null}
           </Reveal>
           {selectedStudents.length > 0 ? (
-            <Carousel opts={{ align: "start" }} className="w-full pb-12 lg:pb-0">
+            <Carousel opts={{ align: "start" }} className="w-full min-w-0 max-lg:overflow-hidden pb-12 lg:pb-0">
               <CarouselContent>
                 {selectedStudents.map((student) => (
-                  <CarouselItem key={student.id} className="lg:basis-1/2">
+                  <CarouselItem key={student.id} className="min-w-0 basis-full lg:basis-1/2">
                     <article className="flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-card">
                       {student.image?.src?.trim() ? (
-                        <div className="relative h-44 w-full">
+                        <div className="relative aspect-square w-full">
                           <ResponsiveImage
                             image={student.image}
                             fill
@@ -198,7 +198,7 @@ export default async function HomePage() {
                           />
                         </div>
                       ) : (
-                        <div className="flex h-36 items-center justify-center bg-forest">
+                        <div className="flex aspect-square w-full items-center justify-center bg-forest">
                           <span className="flex size-14 items-center justify-center rounded-xl bg-gold text-ink">
                             <Icon name="Medal" className="size-7" />
                           </span>
@@ -208,11 +208,6 @@ export default async function HomePage() {
                         <h3 className="text-lg font-semibold text-primary">{student.name}</h3>
                         {student.force.trim() ? (
                           <p className="mt-1 text-sm font-medium text-foreground">{student.force}</p>
-                        ) : null}
-                        {student.description.trim() ? (
-                          <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-                            {student.description}
-                          </p>
                         ) : null}
                       </div>
                     </article>
