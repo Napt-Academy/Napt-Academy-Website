@@ -165,11 +165,11 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="bg-beige py-16 sm:py-24">
+      <section id="achievements" className="max-lg:overflow-x-clip bg-beige py-16 sm:py-24">
         <div
-          className={`section-x grid items-center gap-12${selectedStudents.length > 0 ? " lg:grid-cols-2" : ""}`}
+          className={`section-x grid min-w-0 items-center gap-12${selectedStudents.length > 0 ? " lg:grid-cols-2" : ""}`}
         >
-          <Reveal>
+          <Reveal className="min-w-0">
             <SectionHeading
               align="left"
               eyebrow={achievements.eyebrow}
@@ -183,10 +183,10 @@ export default async function HomePage() {
             ) : null}
           </Reveal>
           {selectedStudents.length > 0 ? (
-            <Carousel opts={{ align: "start" }} className="w-full pb-12 lg:pb-0">
+            <Carousel opts={{ align: "start" }} className="w-full min-w-0 max-lg:overflow-hidden pb-12 lg:pb-0">
               <CarouselContent>
                 {selectedStudents.map((student) => (
-                  <CarouselItem key={student.id} className="lg:basis-1/2">
+                  <CarouselItem key={student.id} className="min-w-0 basis-full lg:basis-1/2">
                     <article className="flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-card">
                       {student.image?.src?.trim() ? (
                         <div className="relative h-44 w-full">
