@@ -41,6 +41,7 @@ import {
 export type EnquiryRow = {
   id: string;
   name: string;
+  phone: string;
   centerId: string;
   centerName: string;
   subject: string;
@@ -172,6 +173,9 @@ export function EnquiriesTable({ rows }: { rows: EnquiryRow[] }) {
                   </TableCell>
                   <TableCell className="px-4 py-3 align-top">
                     <p className="font-medium text-foreground">{row.name}</p>
+                    {row.phone.trim() ? (
+                      <p className="mt-0.5 text-xs text-muted-foreground">{row.phone}</p>
+                    ) : null}
                     <p className="mt-0.5 text-xs text-muted-foreground">
                       {row.centerName || row.centerId}
                     </p>
@@ -219,6 +223,7 @@ export function EnquiriesTable({ rows }: { rows: EnquiryRow[] }) {
           <DialogHeader>
             <DialogTitle>{viewing?.name}</DialogTitle>
             <DialogDescription>
+              {viewing?.phone.trim() ? `${viewing.phone} · ` : null}
               {viewing?.centerName || viewing?.centerId} · {viewing?.subject}
               {viewing ? ` · ${formatCreated(viewing.createdAt)}` : null}
             </DialogDescription>

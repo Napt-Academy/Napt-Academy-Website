@@ -28,6 +28,7 @@ export const mediaAssets = pgTable("media_assets", {
 export const contactEnquiries = pgTable("contact_enquiries", {
   id: uuid("id").defaultRandom().primaryKey(),
   name: text("name").notNull(),
+  phone: text("phone").notNull().default(""),
   centerId: text("center_id").notNull(),
   centerName: text("center_name").notNull().default(""),
   subject: text("subject").notNull(),
