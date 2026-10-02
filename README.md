@@ -17,7 +17,7 @@ This project uses Next.js. In **Project Settings → Build and Deployment**:
 - **Framework Preset:** Next.js
 - **Build Command:** `npm run build` (or default)
 - **Output Directory:** leave **empty** (do not set `dist` — that is a Vite leftover)
-- **Node.js Version:** 20.x
+- **Node.js Version:** 24.x
 
 `vercel.json` pins the framework to Next.js. Do not add `outputDirectory`.
 

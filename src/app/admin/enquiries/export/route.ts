@@ -24,12 +24,13 @@ export async function GET() {
   }
 
   const rows = await listEnquiries();
-  const header = ["Name", "Center", "Subject", "Message", "Date"];
+  const header = ["Name", "Phone", "Center", "Subject", "Message", "Date"];
   const lines = [
     header.join(","),
     ...rows.map((row) =>
       [
         csvCell(row.name),
+        csvCell(row.phone),
         csvCell(row.centerName || row.centerId),
         csvCell(row.subject),
         csvCell(row.message),

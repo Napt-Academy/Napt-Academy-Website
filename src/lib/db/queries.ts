@@ -92,6 +92,7 @@ function enquiryWhere(options?: Pick<EnquiryListOptions, "q" | "from" | "to">): 
 
 export async function insertEnquiry(input: {
   name: string;
+  phone: string;
   centerId: string;
   centerName: string;
   subject: string;

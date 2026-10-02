@@ -16,6 +16,7 @@ CREATE TABLE IF NOT EXISTS media_assets (
 CREATE TABLE IF NOT EXISTS contact_enquiries (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   name text NOT NULL,
+  phone text NOT NULL DEFAULT '',
   center_id text NOT NULL,
   center_name text NOT NULL DEFAULT '',
   subject text NOT NULL,
