@@ -1,0 +1,1 @@
+ALTER TABLE contact_enquiries ADD COLUMN IF NOT EXISTS phone text NOT NULL DEFAULT '';

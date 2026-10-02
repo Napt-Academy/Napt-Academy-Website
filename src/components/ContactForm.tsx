@@ -37,7 +37,7 @@ export function ContactForm({
     formState: { errors, isSubmitting },
   } = useForm<ContactFormValues>({
     resolver: zodResolver(contactFormSchema),
-    defaultValues: { name: "", center: "", subject: "", message: "" },
+    defaultValues: { name: "", phone: "", center: "", subject: "", message: "" },
   });
 
   async function onSubmit(values: ContactFormValues) {
@@ -77,6 +77,22 @@ export function ContactForm({
           {errors.name ? (
             <p className="text-sm text-destructive" role="alert">
               {errors.name.message}
+            </p>
+          ) : null}
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="phone">Phone number</Label>
+          <Input
+            id="phone"
+            type="tel"
+            autoComplete="tel"
+            {...register("phone")}
+            aria-invalid={!!errors.phone}
+          />
+          {errors.phone ? (
+            <p className="text-sm text-destructive" role="alert">
+              {errors.phone.message}
             </p>
           ) : null}
         </div>

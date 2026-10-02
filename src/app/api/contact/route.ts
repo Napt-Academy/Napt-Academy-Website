@@ -24,6 +24,7 @@ export async function POST(request: Request) {
 
     const enquiry = {
       name: parsed.data.name,
+      phone: parsed.data.phone,
       centerId: parsed.data.center,
       centerName: center.name,
       subject: parsed.data.subject,
